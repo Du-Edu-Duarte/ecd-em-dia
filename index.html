@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <!-- viewport: faz a página caber na largura do celular, sem zoom e sem rolar para o lado -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#15110A" />
+  <meta name="description" content="Cadastro de alunos e cobrança de mensalidades." />
+  <title>ECD Em Dia</title>
+
+  <!-- Fonte Inter (padrão ECD) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/estilo.css" />
+</head>
+<body>
+  <!-- Topo: nome do sistema, nome do professor e data de hoje -->
+  <header class="topo">
+    <div class="topo-marca">
+      <span class="topo-sistema" id="nome-sistema"></span>
+      <span class="topo-cliente" id="nome-cliente"></span>
+    </div>
+    <span class="topo-data" id="data-hoje"></span>
+  </header>
+
+  <div class="estrutura">
+    <!-- Menu lateral: aparece só no computador (tela larga) -->
+    <nav class="menu-lateral" id="menu-lateral" aria-label="Menu principal"></nav>
+
+    <!-- Aqui o app.js desenha a tela atual -->
+    <main class="conteudo" id="conteudo" tabindex="-1"></main>
+  </div>
+
+  <!-- Menu inferior: aparece só no celular -->
+  <nav class="menu-inferior" id="menu-inferior" aria-label="Menu principal"></nav>
+
+  <!-- Painel "Mais" (celular): telas que não cabem no menu inferior -->
+  <div class="mais-fundo" id="mais-fundo" hidden></div>
+  <section class="mais-painel" id="mais-painel" hidden aria-label="Mais opções">
+    <div class="mais-cabecalho">
+      <h2>Mais</h2>
+      <button class="botao-icone" id="mais-fechar" aria-label="Fechar"></button>
+    </div>
+    <ul class="mais-lista" id="mais-lista"></ul>
+  </section>
+
+  <!-- Ordem importa: config primeiro, depois utilitários, por último o app -->
+  <script src="js/config.js"></script>
+  <script src="js/formato.js"></script>
+  <script src="js/icones.js"></script>
+  <script src="js/telas.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

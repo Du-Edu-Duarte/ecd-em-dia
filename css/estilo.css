@@ -1,0 +1,433 @@
+/*
+ * estilo.css
+ * Visual ECD, mobile first: o CSS base é para o celular.
+ * No fim do arquivo, um @media ajusta para telas largas (computador).
+ */
+
+/* ---------- 1. Cores e medidas (variáveis) ---------- */
+/* As 4 cores principais são sobrescritas pelo js/config.js. */
+:root {
+  --preto: #15110A;
+  --dourado: #E2B454;
+  --areia: #ECE4D4;
+  --fundo: #F7F4EE;
+  --branco: #FFFFFF;
+  --texto: var(--preto);
+  --texto-suave: #6B6458;
+  --borda: var(--areia);
+
+  /* Cores de status (usadas a partir da etapa 5) */
+  --ok: #2F7A4B;
+  --alerta: #A86A00;
+  --erro: #B3261E;
+
+  --raio: 12px;
+  --toque: 44px;          /* tamanho mínimo de qualquer botão */
+  --altura-topo: 56px;
+  --altura-menu: 64px;
+  --largura-lateral: 240px;
+}
+
+/* Tema P&B (vai ser ligado em Ajustes, na etapa 6) */
+:root[data-tema="pb"] {
+  --dourado: #15110A !important;
+  --areia: #E5E5E5 !important;
+  --fundo: #FFFFFF !important;
+  --texto-suave: #555555;
+}
+
+/* ---------- 2. Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* largura inclui borda e espaçamento: evita estourar a tela */
+}
+
+html,
+body {
+  margin: 0;
+  overflow-x: hidden; /* garantia extra: nada rola para o lado */
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px; /* 16px evita o zoom automático do iPhone em campos */
+  line-height: 1.5;
+  color: var(--texto);
+  background: var(--fundo);
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Contorno visível ao navegar pelo teclado (acessibilidade) */
+:focus-visible {
+  outline: 2px solid var(--dourado);
+  outline-offset: 2px;
+}
+
+.icone {
+  flex-shrink: 0;
+}
+
+/* ---------- 3. Topo ---------- */
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: var(--altura-topo);
+  padding: 8px 16px;
+  padding-top: max(8px, env(safe-area-inset-top));
+  background: var(--preto);
+  color: var(--fundo);
+}
+
+.topo-marca {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* deixa o texto encolher em vez de empurrar a tela */
+}
+
+.topo-sistema {
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topo-cliente {
+  font-size: 13px;
+  color: var(--dourado);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topo-data {
+  font-size: 12px;
+  color: var(--areia);
+  text-align: right;
+}
+
+/* ---------- 4. Área de conteúdo ---------- */
+.conteudo {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 16px calc(var(--altura-menu) + 24px + env(safe-area-inset-bottom));
+  outline: none;
+}
+
+.tela-cabecalho {
+  margin-bottom: 16px;
+}
+
+.tela-cabecalho h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.cartao {
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 20px;
+}
+
+/* Estado vazio das telas em construção */
+.vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 40px 20px;
+}
+
+.vazio-icone {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--fundo);
+  border: 1px solid var(--areia);
+  color: var(--preto);
+  margin-bottom: 8px;
+}
+
+.vazio-titulo {
+  font-weight: 600;
+}
+
+.vazio-texto {
+  color: var(--texto-suave);
+  max-width: 420px;
+}
+
+.vazio-etapa {
+  font-size: 13px;
+  color: var(--texto-suave);
+  border-top: 1px solid var(--areia);
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
+/* ---------- 5. Botões base (usados nas próximas etapas) ---------- */
+.botao,
+.botao-icone {
+  min-height: var(--toque);
+  min-width: var(--toque);
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.botao {
+  padding: 0 18px;
+  font-weight: 600;
+  background: var(--preto);
+  color: var(--fundo);
+}
+
+.botao-destaque {
+  background: var(--dourado);
+  color: var(--preto);
+}
+
+.botao-icone:hover {
+  background: var(--fundo);
+}
+
+/* ---------- 6. Menu inferior (celular) ---------- */
+.menu-inferior {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  min-height: var(--altura-menu);
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--branco);
+  border-top: 1px solid var(--areia);
+}
+
+.aba {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: var(--altura-menu);
+  min-width: 0;
+  padding: 6px 2px;
+  font-size: 11px;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  color: var(--texto-suave);
+  position: relative;
+}
+
+.aba span {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.aba.ativo {
+  color: var(--preto);
+  font-weight: 600;
+}
+
+/* Celulares bem estreitos: rótulo um pouco menor para "Mensalidades" caber */
+@media (max-width: 380px) {
+  .aba {
+    font-size: 10px;
+  }
+}
+
+/* Traço dourado em cima do item ativo */
+.aba.ativo::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 25%;
+  right: 25%;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--dourado);
+}
+
+/* ---------- 7. Painel "Mais" (celular) ---------- */
+.mais-fundo {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(21, 17, 10, 0.45);
+}
+
+.mais-painel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 31;
+  background: var(--branco);
+  border-radius: 16px 16px 0 0;
+  padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
+}
+
+.mais-fundo[hidden],
+.mais-painel[hidden] {
+  display: none;
+}
+
+.mais-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0 8px;
+}
+
+.mais-cabecalho h2 {
+  font-size: 18px;
+}
+
+.mais-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mais-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 56px;
+  padding: 0 4px;
+  border-top: 1px solid var(--areia);
+  font-weight: 500;
+}
+
+.mais-item span {
+  flex: 1;
+}
+
+.mais-item.ativo {
+  color: var(--preto);
+  font-weight: 700;
+}
+
+.mais-item.ativo .icone:first-child {
+  color: var(--dourado);
+}
+
+/* ---------- 8. Menu lateral (computador) ---------- */
+.menu-lateral {
+  display: none; /* escondido no celular */
+}
+
+.estrutura {
+  display: block;
+}
+
+/* ---------- 9. Telas largas: a partir de 900px ---------- */
+@media (min-width: 900px) {
+  .menu-inferior,
+  .mais-fundo,
+  .mais-painel {
+    display: none !important;
+  }
+
+  .estrutura {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .menu-lateral {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: sticky;
+    top: var(--altura-topo);
+    width: var(--largura-lateral);
+    flex-shrink: 0;
+    height: calc(100vh - var(--altura-topo));
+    padding: 16px 12px;
+    background: var(--branco);
+    border-right: 1px solid var(--areia);
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: var(--toque);
+    padding: 0 12px;
+    border-radius: 10px;
+    font-weight: 500;
+    color: var(--texto-suave);
+    border-left: 3px solid transparent;
+  }
+
+  .menu-item:hover {
+    background: var(--fundo);
+    color: var(--preto);
+  }
+
+  .menu-item.ativo {
+    background: var(--fundo);
+    color: var(--preto);
+    font-weight: 600;
+    border-left-color: var(--dourado);
+  }
+
+  .conteudo {
+    padding: 32px 32px 48px;
+  }
+
+  .tela-cabecalho h1 {
+    font-size: 28px;
+  }
+
+  .topo {
+    padding: 8px 24px;
+  }
+
+  .topo-data {
+    font-size: 13px;
+  }
+}
