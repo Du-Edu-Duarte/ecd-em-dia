@@ -131,6 +131,22 @@ const RegrasMensalidades = {
     return "";
   },
 
+  /*
+   * Multa e juros por atraso: desligados por padrão (Ajustes).
+   * config = { multaAtiva, multaPercentual, jurosAtivo, jurosMensal }
+   * Multa: percentual único sobre o saldo. Juros: percentual ao mês, proporcional aos dias.
+   */
+  encargos(m, hoje, config) {
+    const c = config || {};
+    const sit = this.situacao(m, hoje);
+    const zero = { multa: 0, juros: 0, total: sit.saldo };
+    if (sit.codigo !== "atrasada") return zero;
+    const multa = c.multaAtiva ? sit.saldo * (Number(c.multaPercentual) || 0) / 100 : 0;
+    const juros = c.jurosAtivo ? sit.saldo * (Number(c.jurosMensal) || 0) / 100 / 30 * sit.dias : 0;
+    const r = (n) => Math.round(n * 100) / 100;
+    return { multa: r(multa), juros: r(juros), total: r(sit.saldo + multa + juros) };
+  },
+
   // Cartões do resumo do mês
   resumo(mensalidades, hoje) {
     const r = { total: 0, recebido: 0, aReceber: 0, atrasoValor: 0, atrasoQtd: 0 };

@@ -16,16 +16,19 @@ ecd-em-dia/
 │   ├── config.js     nome do sistema, cores, e-mail do administrador e campos extras do cadastro
 │   ├── firebase-config.js  dados públicos do projeto Firebase (não é senha)
 │   ├── servicos/
+│   │   ├── pagamento.js  de onde vem o {link} da mensagem (fase 1: dados do professor; fase 2: meio de pagamento)
 │   │   ├── dados.js  ler, gravar e "ouvir" os dados do professor (sincroniza celular e computador)
 │   │   └── acesso.js login, cadastro, confirmação de e-mail, aprovação (único arquivo que fala com o Firebase Auth)
 │   ├── regras/
 │   │   ├── turmas.js dias da semana, validação, dias por semana e treinos no mês (só cálculo)
 │   │   ├── alunos.js WhatsApp, CPF, valor em R$, validação, busca e ocupação das turmas
-│   │   └── mensalidades.js vencimento (31 em fevereiro), situação, geração, pagamentos e resumo
+│   │   ├── mensalidades.js vencimento (31 em fevereiro), situação, geração, pagamentos, multa e juros
+│   │   └── mensagens.js textos padrão dos lembretes (D-5, D-1, no dia, atraso) e troca das variáveis
 │   ├── telas/
 │   │   ├── aulas.js  tela Aulas e horários
 │   │   ├── alunos.js tela Alunos: lista, ficha, novo e editar (#/alunos, #/alunos/ID, #/alunos/ID/editar)
-│   │   └── mensalidades.js tela Mensalidades: mês, resumo, filtros e registrar pagamento
+│   │   ├── mensalidades.js tela Mensalidades: mês, resumo, filtros e registrar pagamento
+│   │   └── ajustes.js tela Ajustes: dados, formas de pagamento, textos, multa e juros, tema P&B
 │   ├── telas-acesso.js  telas Entrar, Criar conta, Esqueci a senha, Confirme seu e-mail, Aguardando aprovação
 │   ├── formato.js    datas dd/mm/aaaa, valores em R$, "hoje" no fuso de São Paulo
 │   ├── icones.js     ícones de traço (SVG), todos da mesma família
@@ -68,7 +71,7 @@ O login precisa do `js/firebase-config.js` preenchido. Sem ele, o sistema mostra
 3. Aulas e horários (feita)
 4. Alunos (feita)
 5. Mensalidades (feita)
-6. Ajustes
+6. Ajustes (feita)
 7. Botão Cobrar e Cobranças de hoje
 8. Painel
 9. Relatórios

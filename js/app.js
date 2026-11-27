@@ -39,6 +39,7 @@
     $("botao-sair").hidden = !estado.usuario;
 
     Dados.pararTudo();
+    Tema.aplicar(liberado && estado.perfil && estado.perfil.config ? estado.perfil.config.tema : "");
     if (!liberado) {
       $("nome-cliente").textContent = ECD_CONFIG.nomeCliente;
       document.title = ECD_CONFIG.nomeSistema;
@@ -114,6 +115,8 @@
 
     const { tela, parametro } = telaAtual();
     Dados.pararTudo(); // fecha as listas que a tela anterior estava ouvindo
+    // Desfaz uma prévia de tema que não foi salva em Ajustes
+    Tema.aplicar(((Acesso.estado.perfil || {}).config || {}).tema);
     if (tela.desenhar) tela.desenhar($("conteudo"), parametro);
     else $("conteudo").innerHTML = desenharTela(tela);
     document.title = `${tela.titulo} | ${ECD_CONFIG.nomeSistema}`;

@@ -30,7 +30,7 @@
 
 /* Tema P&B (vai ser ligado em Ajustes, na etapa 6) */
 :root[data-tema="pb"] {
-  --dourado: #15110A !important;
+  --dourado: #9A9A9A !important; /* cinza no lugar do dourado: aparece no fundo preto e no branco */
   --areia: #E5E5E5 !important;
   --fundo: #FFFFFF !important;
   --texto-suave: #555555;
@@ -1318,6 +1318,90 @@ a.botao {
 @media (min-width: 900px) {
   .filtros-5 .filtro:last-child {
     grid-column: auto;
+  }
+}
+
+/* ---------- 5h. Ajustes ---------- */
+.ajustes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 720px;
+}
+
+.ajustes .formulario {
+  max-width: none;
+}
+
+.campo-dica-topo {
+  margin-top: -8px;
+}
+
+.campo-dica code {
+  font-size: 13px;
+  background: var(--fundo);
+  border: 1px solid var(--areia);
+  border-radius: 6px;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+
+.lembrete {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--areia);
+}
+
+.lembrete-rodape {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.lembrete-rodape .botao-link {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.previa {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--fundo);
+  border: 1px dashed #CFC6B4;
+  color: var(--texto-suave);
+}
+
+.previa::before {
+  content: "Prévia: ";
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.previa-erro {
+  color: var(--erro);
+  border-color: #F0C8C5;
+}
+
+.barra-salvar {
+  position: sticky;
+  bottom: calc(var(--altura-menu) + env(safe-area-inset-bottom) + 8px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--fundo);
+  border: 1px solid var(--areia);
+  border-radius: var(--raio);
+  box-shadow: 0 4px 16px rgba(21, 17, 10, 0.08);
+}
+
+@media (min-width: 900px) {
+  .barra-salvar {
+    bottom: 16px;
   }
 }
 
