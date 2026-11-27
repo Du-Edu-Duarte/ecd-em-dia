@@ -191,9 +191,29 @@ const TelaAlunos = {
       </section>
 
       <section class="cartao ficha-bloco">
-        <h2>Histórico de pagamentos</h2>
-        <p class="ficha-vazio">Chega na etapa 5, com as mensalidades.</p>
+        <h2>Histórico de mensalidades</h2>
+        <div id="historico"><p class="carregando">Carregando...</p></div>
       </section>`;
+    this.historico(a);
+  },
+
+  // Mensalidades do aluno, da mais nova para a mais antiga
+  historico(aluno) {
+    Dados.ouvir("mensalidades", (lista) => {
+      const el = this.container.querySelector("#historico");
+      if (!el) return;
+      const hoje = Formato.hojeISO();
+      lista.sort((x, y) => y.competencia.localeCompare(x.competencia));
+      el.innerHTML = lista.length ? `<ul class="lista-historico">${lista.map((m) => {
+        const sit = RegrasMensalidades.situacao(m, hoje);
+        return `<li><a href="#/mensalidades/m/${Formato.seguro(m.id)}">
+          <span><strong>${RegrasMensalidades.competenciaTexto(m.competencia)}</strong>
+            <small>${sit.codigo === "paga" ? `Pago em ${Formato.data(m.pagoEm)}` : `Vence ${Formato.data(m.vencimento)}`}</small></span>
+          <span class="historico-direita">${Formato.dinheiro(m.valor)}
+            <span class="etiqueta etiqueta-sit-${sit.codigo}">${sit.codigo === "paga" ? "Paga" : sit.rotulo}</span></span>
+        </a></li>`;
+      }).join("")}</ul>` : `<p class="ficha-vazio">Nenhuma mensalidade ainda.</p>`;
+    }, () => {}, (ref) => ref.where("alunoId", "==", aluno.id));
   },
 
   /* ---------- Formulário (novo e editar) ---------- */
@@ -345,6 +365,7 @@ const TelaAlunos = {
     botao.disabled = true;
     try {
       const id = await Dados.salvar("alunos", dados, aluno && aluno.id);
+      try { await Dados.gerarMensalidades(); } catch (e) { console.error(e); } // já cria a mensalidade do mês
       location.hash = `#/alunos/${id}`;
     } catch (e) {
       console.error(e);
@@ -356,7 +377,7 @@ const TelaAlunos = {
   confirmarExclusao(aluno) {
     const zona = this.container.querySelector("#zona-excluir");
     zona.innerHTML = `
-      <p class="excluir-pergunta">Excluir <strong>${Formato.seguro(aluno.nome)}</strong> e todos os dados dele? Isso não pode ser desfeito.
+      <p class="excluir-pergunta">Excluir <strong>${Formato.seguro(aluno.nome)}</strong> e todos os dados dele, inclusive as mensalidades? Isso não pode ser desfeito.
         Se ele só parou de treinar, prefira mudar a situação para Inativo ou Trancado.</p>
       <div class="formulario-acoes">
         <button class="botao botao-perigo-cheio" type="button" id="sim-excluir">Sim, excluir</button>
@@ -366,7 +387,7 @@ const TelaAlunos = {
     zona.querySelector("#sim-excluir").addEventListener("click", async (e) => {
       e.target.disabled = true;
       try {
-        await Dados.excluir("alunos", aluno.id);
+        await Dados.excluirAluno(aluno.id);
         location.hash = "#/alunos";
       } catch (erro) {
         console.error(erro);

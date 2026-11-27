@@ -49,6 +49,7 @@
     // Liberado: nome do professor no topo e menus conforme o perfil
     if (estado.perfil && estado.perfil.nome) $("nome-cliente").textContent = estado.perfil.nome;
     telasVisiveis = TELAS.filter((t) => !t.apenasAdmin || estado.situacao === "admin");
+    Dados.gerarMensalidades().catch((e) => console.error(e)); // cria as mensalidades que faltam
     montarMenus();
     navegar();
   }

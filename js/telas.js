@@ -44,6 +44,7 @@ const TELAS = [
     menuInferior: true,
     etapa: 5,
     resumo: "Mensalidades do mês e registro de pagamento.",
+    desenhar: (container, parametro) => TelaMensalidades.desenhar(container, parametro),
   },
   {
     id: "aulas",

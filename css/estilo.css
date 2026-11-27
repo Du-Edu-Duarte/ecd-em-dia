@@ -1060,6 +1060,267 @@ a.botao {
   }
 }
 
+/* ---------- 5g. Mensalidades ---------- */
+.seletor-mes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 4px;
+  background: var(--branco);
+  border: 1px solid var(--areia);
+  border-radius: var(--raio);
+}
+
+.seletor-mes strong {
+  display: inline-block;
+  text-align: center;
+}
+
+/* "novembro de 2026" -> "Novembro de 2026" (só a primeira letra) */
+.seletor-mes strong::first-letter,
+.lista-historico strong::first-letter {
+  text-transform: uppercase;
+}
+
+.resumo-cartoes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.resumo {
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  min-width: 0;
+}
+
+.resumo span {
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+
+.resumo strong {
+  font-size: 19px;
+  overflow-wrap: anywhere;
+}
+
+.resumo small {
+  font-size: 12px;
+  color: var(--texto-suave);
+}
+
+.resumo-alerta {
+  grid-column: 1 / -1;
+  border-left: 3px solid var(--erro);
+}
+
+.aviso-alerta {
+  color: #7A4D00;
+  background: #FBF3E2;
+  border-color: #E8CF9C;
+}
+
+.aviso-link {
+  display: flex;
+  align-items: center;
+  min-height: var(--toque);
+  margin-bottom: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.filtros-5 {
+  margin-bottom: 12px;
+}
+
+.filtros-5 .filtro:last-child {
+  grid-column: 1 / -1;
+}
+
+.lista-mensalidades {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mensalidade {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 14px 16px;
+}
+
+.mensalidade:hover {
+  border-color: var(--dourado);
+}
+
+.mensalidade-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.mensalidade-info strong {
+  font-size: 16px;
+  color: var(--texto);
+  overflow-wrap: anywhere;
+}
+
+.mensalidade-info .etiqueta {
+  margin-top: 4px;
+}
+
+.mensalidade-valor {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: right;
+}
+
+.mensalidade-valor small {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--texto-suave);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.etiqueta-sit-paga {
+  color: var(--ok);
+  border-color: #C5E0CF;
+  background: #EAF4EE;
+}
+
+.etiqueta-sit-atrasada {
+  color: var(--erro);
+  border-color: #F0C8C5;
+  background: #FBEDEC;
+}
+
+.etiqueta-sit-hoje,
+.etiqueta-sit-breve {
+  color: var(--alerta);
+  border-color: #E8CF9C;
+  background: #FBF3E2;
+}
+
+.etiqueta-sit-aberta {
+  color: var(--texto-suave);
+  border-color: var(--areia);
+  background: var(--fundo);
+}
+
+.formulario-titulo {
+  font-size: 18px;
+}
+
+#form-pagamento {
+  margin-bottom: 12px;
+  max-width: none;
+}
+
+.lista-pagamentos,
+.lista-historico {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lista-pagamentos li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid var(--areia);
+  font-size: 14px;
+}
+
+.lista-pagamentos li:first-child {
+  border-top: 0;
+}
+
+.lista-pagamentos li > span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.lista-pagamentos small {
+  color: var(--texto-suave);
+}
+
+.lista-pagamentos .botao-perigo {
+  margin-left: 0;
+  flex-shrink: 0;
+}
+
+.lista-historico a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 6px 0;
+  border-top: 1px solid var(--areia);
+  font-size: 14px;
+}
+
+.lista-historico li:first-child a {
+  border-top: 0;
+}
+
+.lista-historico a > span:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.lista-historico strong {
+  display: inline-block;
+}
+
+.lista-historico small {
+  color: var(--texto-suave);
+}
+
+.historico-direita {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-weight: 600;
+}
+
+@media (min-width: 600px) {
+  .resumo-cartoes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .resumo-alerta {
+    grid-column: auto;
+  }
+}
+
+@media (min-width: 900px) {
+  .filtros-5 .filtro:last-child {
+    grid-column: auto;
+  }
+}
+
 /* ---------- 6. Menu inferior (celular) ---------- */
 .menu-inferior {
   position: fixed;

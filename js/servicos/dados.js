@@ -16,8 +16,10 @@ const Dados = {
   },
 
   // Chama "aoMudar(lista)" agora e a cada mudança. Cada item vem com o id.
-  ouvir(nome, aoMudar, aoErrar) {
-    const parar = this.colecao(nome).onSnapshot(
+  // "filtro" é opcional, por exemplo: (ref) => ref.where("alunoId", "==", id)
+  ouvir(nome, aoMudar, aoErrar, filtro) {
+    const ref = filtro ? filtro(this.colecao(nome)) : this.colecao(nome);
+    const parar = ref.onSnapshot(
       (snap) => aoMudar(snap.docs.map((d) => ({ id: d.id, ...d.data() }))),
       (erro) => {
         console.error(erro);
@@ -52,6 +54,58 @@ const Dados = {
 
   excluir(nome, id) {
     return this.colecao(nome).doc(id).delete();
+  },
+
+  // Exclui o aluno e as mensalidades dele (LGPD: não sobra dado do aluno)
+  async excluirAluno(alunoId) {
+    const snap = await this.colecao("mensalidades").where("alunoId", "==", alunoId).get();
+    const lote = Acesso.db.batch();
+    snap.docs.forEach((d) => lote.delete(d.ref));
+    lote.delete(this.colecao("alunos").doc(alunoId));
+    await lote.commit();
+  },
+
+  /*
+   * Cria as mensalidades que faltam para os alunos ativos (até o mês atual,
+   * e o mês seguinte se vencer em até 5 dias). Roda ao entrar no sistema,
+   * ao abrir Mensalidades e ao salvar um aluno. Na fase 2, esta mesma lógica
+   * passa para a tarefa agendada no servidor.
+   *
+   * Se o professor mudou o valor ou o dia de vencimento do aluno, as mensalidades
+   * ainda sem nenhum pagamento, do mês atual em diante, são atualizadas também.
+   */
+  async gerarMensalidades() {
+    const hoje = Formato.hojeISO();
+    const [alunos, existentes] = await Promise.all([this.listar("alunos"), this.listar("mensalidades")]);
+    const porId = new Map(existentes.map((m) => [m.id, m]));
+    const mesAtual = hoje.slice(0, 7);
+    const lote = Acesso.db.batch();
+    const agora = firebase.firestore.FieldValue.serverTimestamp();
+    let mudancas = 0;
+
+    alunos.forEach((aluno) => {
+      const cadastradoEm = aluno.criadoEm && aluno.criadoEm.toDate ? Formato.isoDe(aluno.criadoEm.toDate()) : null;
+      RegrasMensalidades.paraGerar(aluno, hoje, cadastradoEm).forEach(({ competencia, vencimento }) => {
+        const id = RegrasMensalidades.idMensalidade(aluno.id, competencia);
+        const atual = porId.get(id);
+        const ref = this.colecao("mensalidades").doc(id);
+        if (!atual) {
+          lote.set(ref, {
+            alunoId: aluno.id, competencia, vencimento, valor: aluno.valor,
+            status: "aberta", valorPago: 0, pagamentos: [], pagoEm: null, forma: null,
+            linkPagamento: null, gatewayId: null, // preenchidos na fase 2 (meio de pagamento)
+            criadoEm: agora, alteradoEm: agora,
+          });
+          mudancas++;
+        } else if (competencia >= mesAtual && !(atual.valorPago > 0) &&
+                   (atual.valor !== aluno.valor || atual.vencimento !== vencimento)) {
+          lote.update(ref, { valor: aluno.valor, vencimento, alteradoEm: agora });
+          mudancas++;
+        }
+      });
+    });
+    if (mudancas) await lote.commit();
+    return mudancas;
   },
 
   // Exclui uma turma e, na mesma operação, tira a turma dos alunos que treinavam nela
