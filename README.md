@@ -16,12 +16,18 @@ ecd-em-dia/
 │   ├── config.js     nome do sistema, cores, e-mail do administrador e campos extras do cadastro
 │   ├── firebase-config.js  dados públicos do projeto Firebase (não é senha)
 │   ├── servicos/
+│   │   ├── dados.js  ler, gravar e "ouvir" os dados do professor (sincroniza celular e computador)
 │   │   └── acesso.js login, cadastro, confirmação de e-mail, aprovação (único arquivo que fala com o Firebase Auth)
+│   ├── regras/
+│   │   └── turmas.js dias da semana, validação, dias por semana e treinos no mês (só cálculo)
+│   ├── telas/
+│   │   └── aulas.js  tela Aulas e horários
 │   ├── telas-acesso.js  telas Entrar, Criar conta, Esqueci a senha, Confirme seu e-mail, Aguardando aprovação
 │   ├── formato.js    datas dd/mm/aaaa, valores em R$, "hoje" no fuso de São Paulo
 │   ├── icones.js     ícones de traço (SVG), todos da mesma família
 │   ├── telas.js      lista das telas, o desenho de cada uma e a tela Contas (administrador)
 │   └── app.js        aplica o config, monta os menus e troca de tela pelo endereço (#/alunos)
+├── testes/           testes das regras: node --test testes/
 └── img/              ícones do app (etapa 10)
 ```
 
@@ -47,7 +53,7 @@ O login precisa do `js/firebase-config.js` preenchido. Sem ele, o sistema mostra
 
 1. Base e visual (feita)
 2. Firebase e acesso (feita)
-3. Aulas e horários
+3. Aulas e horários (feita)
 4. Alunos
 5. Mensalidades
 6. Ajustes

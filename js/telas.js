@@ -4,8 +4,8 @@
  * Cada tela tem: id (vai na URL, ex.: #/alunos), título, ícone,
  * rótulo curto para o menu do celular e onde ela aparece no menu.
  *
- * Nesta etapa 1 as telas estão vazias. Cada etapa seguinte troca
- * o "desenhar" da tela pelo conteúdo de verdade.
+ * Tela com "desenhar" já está pronta (o código fica em js/telas/).
+ * Tela sem "desenhar" mostra o aviso "Tela em construção".
  */
 const TELAS = [
   {
@@ -52,6 +52,7 @@ const TELAS = [
     menuInferior: false,
     etapa: 3,
     resumo: "Turmas com dias da semana, horário de início e fim e vagas.",
+    desenhar: (container) => TelaAulas.desenhar(container),
   },
   {
     id: "relatorios",
