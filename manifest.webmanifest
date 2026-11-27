@@ -1,0 +1,18 @@
+{
+  "name": "ECD Em Dia",
+  "short_name": "ECD Em Dia",
+  "description": "Cadastro de alunos e cobrança de mensalidades.",
+  "lang": "pt-BR",
+  "id": "./",
+  "start_url": "./#/painel",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F7F4EE",
+  "theme_color": "#15110A",
+  "icons": [
+    { "src": "img/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "img/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "img/icone-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -52,6 +52,12 @@
     telasVisiveis = TELAS.filter((t) => !t.apenasAdmin || estado.situacao === "admin");
     Dados.gerarMensalidades().catch((e) => console.error(e)); // cria as mensalidades que faltam
     montarMenus();
+
+    // Primeira vez do professor: abre o guia de Primeiro acesso no lugar do Painel
+    const semTela = ["", "#", "#/", "#/painel"].includes(location.hash);
+    if (estado.situacao === "ativo" && estado.perfil && !estado.perfil.guiaVisto && semTela) {
+      history.replaceState(null, "", "#/primeiro-acesso");
+    }
     navegar();
   }
 
@@ -134,6 +140,11 @@
     fecharMais();
     window.scrollTo(0, 0);
     $("conteudo").focus({ preventScroll: true });
+  }
+
+  // PWA: registra o service worker (permite instalar e abrir com internet fraca)
+  if ("serviceWorker" in navigator && location.protocol === "https:") {
+    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch((e) => console.error(e)));
   }
 
   aplicarConfig();

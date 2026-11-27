@@ -31,6 +31,7 @@ ecd-em-dia/
 │   ├── telas/
 │   │   ├── painel.js tela inicial: cartões do mês, alunos com filtros e próximos vencimentos
 │   │   ├── relatorios.js tela Relatórios do mês, com planilha (Excel) e PDF
+│   │   ├── primeiro-acesso.js guia de 8 passos (abre sozinho na 1ª vez) e como instalar no celular
 │   │   ├── aulas.js  tela Aulas e horários
 │   │   ├── alunos.js tela Alunos: lista, ficha, novo e editar (#/alunos, #/alunos/ID, #/alunos/ID/editar)
 │   │   ├── mensalidades.js tela Mensalidades: mês, resumo, filtros e registrar pagamento
@@ -42,7 +43,9 @@ ecd-em-dia/
 │   ├── telas.js      lista das telas, o desenho de cada uma e a tela Contas (administrador)
 │   └── app.js        aplica o config, monta os menus e troca de tela pelo endereço (#/alunos)
 ├── testes/           testes das regras: node --test testes/*.test.js
-└── img/              ícones do app (etapa 10)
+├── manifest.webmanifest  nome, cores e ícones do app instalado (PWA)
+├── sw.js             service worker: guarda os arquivos para abrir rápido e sem internet
+└── img/              ícones do app: icone.svg é a fonte; PNG 192, 512, maskable, apple-touch-icon e favicon
 ```
 
 ## Rodar no computador
@@ -94,6 +97,14 @@ O login precisa do `js/firebase-config.js` preenchido. Sem ele, o sistema mostra
 - **Baixar planilha (Excel)**: arquivo CSV com separador `;` e centavos com vírgula, que o Excel em português abre direto e com acentos.
 - **Salvar em PDF**: abre a janela de impressão; escolha "Salvar como PDF". Sai só o relatório, sem menus, com o nome do professor e a data.
 
+## Aplicativo instalável (PWA) e Primeiro acesso
+
+- O `manifest.webmanifest` e o `sw.js` deixam instalar o sistema na tela inicial do celular (Android pelo Chrome, iPhone pelo Safari em Compartilhar > Adicionar à Tela de Início) e no computador.
+- O service worker busca sempre a versão nova na internet e só usa a cópia guardada quando está sem sinal. Os dados e o login não passam por ele.
+- **Criou um arquivo novo em `js/`?** Coloque-o também na lista `ARQUIVOS` do `sw.js` e mude a `VERSAO` (ex.: `ecd-em-dia-v2`). O teste `testes/pwa.test.js` avisa se esquecer.
+- Mudou o nome ou as cores em `js/config.js`? Mude também no `manifest.webmanifest` e gere os ícones de novo a partir de `img/icone.svg`.
+- Na primeira vez que o professor entra, abre o guia **Primeiro acesso** (8 passos, um por tela). O passo 2 já grava o nome, o WhatsApp e a chave Pix. Quando ele conclui ou pula, o perfil ganha `guiaVisto: true` e o guia não abre mais sozinho; ele continua em **Mais > Primeiro acesso**.
+
 ## Etapas da Fase 1
 
 1. Base e visual (feita)
@@ -105,4 +116,4 @@ O login precisa do `js/firebase-config.js` preenchido. Sem ele, o sistema mostra
 7. Botão Cobrar e Cobranças de hoje (feita)
 8. Painel (feita)
 9. Relatórios (feita)
-10. PWA e Primeiro acesso
+10. PWA e Primeiro acesso (feita)
