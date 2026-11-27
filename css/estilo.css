@@ -1516,6 +1516,229 @@ a.botao {
   }
 }
 
+/* ---------- 5j. Painel ---------- */
+.vazio-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+a.resumo,
+button.resumo {
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+a.resumo:hover,
+button.resumo:hover {
+  border-color: var(--dourado);
+}
+
+.painel-cartoes .resumo-alerta {
+  grid-column: auto;
+}
+
+.atalho-cobrancas {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border-left: 3px solid var(--dourado);
+}
+
+.atalho-cobrancas:hover {
+  border-color: var(--dourado);
+}
+
+.atalho-ok {
+  border-left-color: var(--ok);
+}
+
+.atalho-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--areia);
+  flex-shrink: 0;
+}
+
+.atalho-texto {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.atalho-texto strong {
+  font-size: 16px;
+  color: var(--texto);
+}
+
+.painel-secao {
+  margin-bottom: 22px;
+}
+
+.painel-titulo {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--texto-suave);
+  margin-bottom: 8px;
+}
+
+.lista-painel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.painel-aluno {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.painel-aluno-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.painel-aluno-info strong {
+  font-size: 16px;
+  color: var(--texto);
+  overflow-wrap: anywhere;
+}
+
+.painel-aluno-info .etiqueta {
+  margin-top: 4px;
+}
+
+.painel-aluno-info small {
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+/* Celular: Cobrar e Registrar pagamento dividem a linha, WhatsApp no canto */
+.painel-acoes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) auto;
+  gap: 8px;
+}
+
+.painel-acoes .botao {
+  padding: 0 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Aluno em dia: só o botão do WhatsApp, ao lado do nome */
+.painel-aluno-linha {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.painel-acoes-so-zap {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.botao-zap {
+  border: 1px solid #CFC6B4;
+  background: var(--branco);
+}
+
+.proximos {
+  list-style: none;
+  margin: 0;
+  padding: 4px 16px;
+}
+
+.proximo-dia {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--areia);
+}
+
+.proximo-dia:first-child {
+  border-top: 0;
+}
+
+.proximo-data {
+  flex-shrink: 0;
+  width: 64px;
+  padding-top: 12px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.proximo-dia ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.proximo-dia a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--toque);
+}
+
+.proximo-dia a span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.proximo-dia a:hover span {
+  text-decoration: underline;
+}
+
+@media (min-width: 600px) {
+  .painel-aluno {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .painel-acoes {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .painel-acoes .botao {
+    padding: 0 16px;
+  }
+}
+
+@media (min-width: 900px) {
+  .painel-cartoes {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 /* ---------- 6. Menu inferior (celular) ---------- */
 .menu-inferior {
   position: fixed;

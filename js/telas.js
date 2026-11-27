@@ -16,6 +16,7 @@ const TELAS = [
     menuInferior: true,
     etapa: 8,
     resumo: "Valores a receber, recebidos e em atraso, alunos ativos e próximos vencimentos.",
+    desenhar: (container) => TelaPainel.desenhar(container),
   },
   {
     id: "alunos",
