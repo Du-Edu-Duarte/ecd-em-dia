@@ -22,7 +22,10 @@
       <span class="topo-sistema" id="nome-sistema"></span>
       <span class="topo-cliente" id="nome-cliente"></span>
     </div>
-    <span class="topo-data" id="data-hoje"></span>
+    <div class="topo-direita">
+      <span class="topo-data" id="data-hoje"></span>
+      <button class="botao-icone botao-sair" id="botao-sair" type="button" aria-label="Sair" title="Sair" hidden></button>
+    </div>
   </header>
 
   <div class="estrutura">
@@ -46,10 +49,18 @@
     <ul class="mais-lista" id="mais-lista"></ul>
   </section>
 
-  <!-- Ordem importa: config primeiro, depois utilitários, por último o app -->
+  <!-- Firebase (versão "compat": funciona com <script> comum, sem módulos) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+  <!-- Ordem importa: configurações primeiro, depois utilitários e serviços, por último o app -->
   <script src="js/config.js"></script>
+  <script src="js/firebase-config.js"></script>
   <script src="js/formato.js"></script>
   <script src="js/icones.js"></script>
+  <script src="js/servicos/acesso.js"></script>
+  <script src="js/telas-acesso.js"></script>
   <script src="js/telas.js"></script>
   <script src="js/app.js"></script>
 </body>

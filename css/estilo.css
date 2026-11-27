@@ -130,10 +130,29 @@ button {
   text-overflow: ellipsis;
 }
 
+.topo-direita {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
 .topo-data {
   font-size: 12px;
   color: var(--areia);
   text-align: right;
+}
+
+.botao-sair {
+  color: var(--fundo);
+}
+
+.botao-sair:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.botao-sair[hidden] {
+  display: none;
 }
 
 /* ---------- 4. Área de conteúdo ---------- */
@@ -227,6 +246,232 @@ button {
 
 .botao-icone:hover {
   background: var(--fundo);
+}
+
+.botao:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.botao-secundario {
+  background: var(--branco);
+  color: var(--preto);
+  border: 1px solid var(--preto);
+}
+
+.botao-largo {
+  width: 100%;
+}
+
+.botao-link {
+  min-height: var(--toque);
+  padding: 0 8px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- 5b. Formulários ---------- */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.campo input {
+  width: 100%;
+  min-height: var(--toque);
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--texto);
+  background: var(--branco);
+  border: 1px solid #CFC6B4;
+  border-radius: 10px;
+}
+
+.campo input:focus {
+  outline: 2px solid var(--dourado);
+  outline-offset: 0;
+  border-color: var(--preto);
+}
+
+.campo-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--texto-suave);
+  min-height: var(--toque);
+}
+
+.campo-check input {
+  width: 22px;
+  height: 22px;
+  margin: 2px 0 0;
+  flex-shrink: 0;
+  accent-color: var(--preto);
+}
+
+.aviso {
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  border: 1px solid;
+}
+
+.aviso[hidden] {
+  display: none;
+}
+
+.aviso-erro {
+  color: var(--erro);
+  background: #FBEDEC;
+  border-color: #F0C8C5;
+}
+
+.aviso-ok {
+  color: var(--ok);
+  background: #EAF4EE;
+  border-color: #C5E0CF;
+}
+
+.carregando {
+  color: var(--texto-suave);
+  padding: 24px 0;
+  text-align: center;
+}
+
+/* ---------- 5c. Telas de acesso (login, cadastro, aprovação) ---------- */
+/* No modo acesso, os menus somem e o cartão fica centralizado */
+.modo-acesso .menu-inferior,
+.modo-acesso .menu-lateral,
+.modo-acesso .mais-painel,
+.modo-acesso .mais-fundo {
+  display: none !important;
+}
+
+.modo-acesso .conteudo {
+  padding-bottom: 32px;
+}
+
+.acesso {
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.acesso-cartao {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 20px;
+}
+
+.acesso-marca {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-left: 3px solid var(--dourado);
+  padding-left: 8px;
+}
+
+.acesso-cartao h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.acesso-texto {
+  color: var(--texto-suave);
+}
+
+.acesso-rodape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0 4px;
+  border-top: 1px solid var(--areia);
+  padding-top: 8px;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+/* ---------- 5d. Tela Contas (administrador) ---------- */
+#lista-contas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.conta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+}
+
+.conta-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.conta-nome {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.conta-dados {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: var(--texto-suave);
+  overflow-wrap: anywhere; /* e-mail comprido quebra em vez de empurrar a tela */
+}
+
+.conta-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.conta-acoes .botao {
+  flex: 1 1 120px;
+}
+
+.etiqueta {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid;
+}
+
+.etiqueta-pendente {
+  color: var(--alerta);
+  border-color: #E8CF9C;
+  background: #FBF3E2;
+}
+
+.etiqueta-ativo {
+  color: var(--ok);
+  border-color: #C5E0CF;
+  background: #EAF4EE;
+}
+
+.etiqueta-bloqueado {
+  color: var(--erro);
+  border-color: #F0C8C5;
+  background: #FBEDEC;
 }
 
 /* ---------- 6. Menu inferior (celular) ---------- */

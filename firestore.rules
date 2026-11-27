@@ -1,0 +1,67 @@
+// firestore.rules
+// Regras de segurança do Firestore. São elas que protegem os dados de verdade:
+// mesmo que alguém mexa no JavaScript do navegador, o servidor do Firebase
+// recusa o que estiver fora destas regras.
+//
+// Como publicar: Firebase Console > Firestore Database > Regras > colar tudo > Publicar.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function logado() {
+      return request.auth != null;
+    }
+
+    // Administrador ECD: e-mail fixo e confirmado.
+    // Se trocar o administrador, troque também em js/config.js (emailAdmin).
+    function admin() {
+      return logado()
+        && request.auth.token.email == 'eduardoduartecostaduarte@gmail.com'
+        && request.auth.token.email_verified == true;
+    }
+
+    function dono(uid) {
+      return logado() && request.auth.uid == uid;
+    }
+
+    // Professor aprovado: e-mail confirmado e status "ativo" no perfil
+    function aprovado(uid) {
+      return dono(uid)
+        && request.auth.token.email_verified == true
+        && get(/databases/$(database)/documents/professores/$(uid)).data.status == 'ativo';
+    }
+
+    match /professores/{uid} {
+      // Cada um lê só o próprio perfil. O administrador lê todos.
+      allow read: if dono(uid) || admin();
+
+      // No cadastro, o professor cria o próprio perfil, sempre como "pendente"
+      // e com o mesmo e-mail do login. Ninguém consegue se cadastrar já aprovado.
+      allow create: if admin()
+        || (dono(uid)
+            && request.resource.data.status == 'pendente'
+            && request.resource.data.email == request.auth.token.email
+            && request.resource.data.plano == null);
+
+      // O professor aprovado edita os próprios dados, menos status, plano e e-mail.
+      // Só o administrador aprova, bloqueia ou muda o plano.
+      allow update: if admin()
+        || (aprovado(uid)
+            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'plano', 'email']));
+
+      allow delete: if admin();
+
+      // Turmas, alunos, mensalidades e envios: só o professor aprovado (dono) e o administrador.
+      // Conta pendente ou bloqueada não lê nem grava nada aqui.
+      match /{subcolecao}/{documento=**} {
+        allow read, write: if admin() || aprovado(uid);
+      }
+    }
+
+    // Qualquer outra coleção fica fechada.
+    match /{caminho=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -31,6 +31,13 @@ const Formato = {
     }).format(Number(valor) || 0);
   },
 
+  // Protege textos digitados pelo usuário antes de colocar no HTML
+  // (evita que um nome como "<script>" vire código na tela).
+  seguro(texto) {
+    return String(texto ?? "").replace(/[&<>"']/g, (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  },
+
   // Texto longo da data de hoje: "sexta-feira, 27/11/2026"
   hojeExtenso() {
     const diaSemana = new Intl.DateTimeFormat(ECD_CONFIG.idioma, {
