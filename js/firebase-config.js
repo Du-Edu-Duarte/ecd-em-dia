@@ -6,13 +6,13 @@
  * e pode ficar no front-end. Quem protege os dados são as regras do
  * Firestore (arquivo firestore.rules).
  *
- * Projeto Firebase: ecd-em-dia (plano Spark, gratuito).
+ * Projeto Firebase: ecd-em-dia-app, no Gmail da ECD (plano Spark, gratuito).
  */
 window.FIREBASE_CONFIG = {
-  apiKey: "AIzaSyAbLhtubrlPiQzEI0dUw0auZ8pW-Yt1-o0",
-  authDomain: "ecd-em-dia.firebaseapp.com",
-  projectId: "ecd-em-dia",
-  storageBucket: "ecd-em-dia.firebasestorage.app",
-  messagingSenderId: "1026077148151",
-  appId: "1:1026077148151:web:77bf163927816d1ec424f2",
+  apiKey: "AIzaSyAnifNkhkAEvdI4TUjkpY4Ti8m8muUoX2w",
+  authDomain: "ecd-em-dia-app.firebaseapp.com",
+  projectId: "ecd-em-dia-app",
+  storageBucket: "ecd-em-dia-app.firebasestorage.app",
+  messagingSenderId: "713240451612",
+  appId: "1:713240451612:web:4107974409a04e6236ddd9",
 };
