@@ -73,6 +73,7 @@ const TELAS = [
     menuInferior: false,
     etapa: 6,
     resumo: "Dados do professor, formas de pagamento, textos dos lembretes, multa e juros, tema P&B.",
+    desenhar: (container) => TelaAjustes.desenhar(container),
   },
   {
     id: "contas",

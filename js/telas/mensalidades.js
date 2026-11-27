@@ -128,6 +128,7 @@ const TelaMensalidades = {
     }
     const hoje = Formato.hojeISO();
     const sit = RegrasMensalidades.situacao(m, hoje);
+    const enc = RegrasMensalidades.encargos(m, hoje, (Acesso.estado.perfil || {}).config);
     const aluno = this.alunos.find((a) => a.id === m.alunoId);
     const formas = RegrasAlunos.FORMAS.map((f) =>
       `<option value="${f.id}" ${f.id === ((aluno && aluno.formaPreferida) || "pix") ? "selected" : ""}>${f.rotulo}</option>`).join("");
@@ -148,6 +149,10 @@ const TelaMensalidades = {
           <div class="ficha-linha"><dt>Valor</dt><dd>${Formato.dinheiro(m.valor)}</dd></div>
           <div class="ficha-linha"><dt>Pago</dt><dd>${Formato.dinheiro(m.valorPago || 0)}</dd></div>
           <div class="ficha-linha"><dt>Saldo devedor</dt><dd><strong>${Formato.dinheiro(sit.saldo)}</strong></dd></div>
+          ${enc.total > sit.saldo ? `
+          <div class="ficha-linha"><dt>Multa</dt><dd>${Formato.dinheiro(enc.multa)}</dd></div>
+          <div class="ficha-linha"><dt>Juros (${sit.dias} ${sit.dias === 1 ? "dia" : "dias"})</dt><dd>${Formato.dinheiro(enc.juros)}</dd></div>
+          <div class="ficha-linha"><dt>Total com encargos</dt><dd><strong>${Formato.dinheiro(enc.total)}</strong></dd></div>` : ""}
         </dl>
       </section>
 

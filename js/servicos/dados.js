@@ -36,6 +36,16 @@ const Dados = {
     this.escutas = [];
   },
 
+  // Atualiza o perfil do professor (professores/{uid}). As regras do Firestore
+  // não deixam o professor mudar status, plano nem e-mail por aqui.
+  async salvarPerfil(campos) {
+    const uid = Acesso.estado.usuario.uid;
+    await Acesso.db.collection("professores").doc(uid).update({
+      ...campos, alteradoEm: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    Acesso.estado.perfil = { ...Acesso.estado.perfil, ...campos };
+  },
+
   async listar(nome) {
     const snap = await this.colecao(nome).get();
     return snap.docs.map((d) => ({ id: d.id, ...d.data() }));

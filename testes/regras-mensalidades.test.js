@@ -75,3 +75,12 @@ test("resumo do mês", () => {
   ], hoje);
   assert.deepEqual(r, { total: 450, recebido: 200, aReceber: 250, atrasoValor: 150, atrasoQtd: 1 });
 });
+
+test("multa e juros só quando ligados e só em atraso", () => {
+  const hoje = "2026-11-27";
+  const m = { valor: 150, valorPago: 0, vencimento: "2026-11-17" }; // 10 dias de atraso
+  assert.deepEqual(R.encargos(m, hoje, {}), { multa: 0, juros: 0, total: 150 });
+  const cfg = { multaAtiva: true, multaPercentual: 2, jurosAtivo: true, jurosMensal: 1 };
+  assert.deepEqual(R.encargos(m, hoje, cfg), { multa: 3, juros: 0.5, total: 153.5 });
+  assert.equal(R.encargos({ ...m, vencimento: "2026-11-30" }, hoje, cfg).total, 150);
+});
