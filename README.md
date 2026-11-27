@@ -26,9 +26,11 @@ ecd-em-dia/
 │   │   ├── mensalidades.js vencimento (31 em fevereiro), situação, geração, pagamentos, multa e juros
 │   │   ├── mensagens.js textos padrão dos lembretes (D-5, D-1, no dia, atraso) e troca das variáveis
 │   │   ├── painel.js cartões, filtros por aluno e próximos vencimentos do Painel
+│   │   ├── relatorios.js recebido x a receber, inadimplência, alunos por turma e a planilha CSV
 │   │   └── cobrancas.js quem cobrar hoje (régua D-5, D-1, no dia, atraso) e se já foi enviado
 │   ├── telas/
 │   │   ├── painel.js tela inicial: cartões do mês, alunos com filtros e próximos vencimentos
+│   │   ├── relatorios.js tela Relatórios do mês, com planilha (Excel) e PDF
 │   │   ├── aulas.js  tela Aulas e horários
 │   │   ├── alunos.js tela Alunos: lista, ficha, novo e editar (#/alunos, #/alunos/ID, #/alunos/ID/editar)
 │   │   ├── mensalidades.js tela Mensalidades: mês, resumo, filtros e registrar pagamento
@@ -85,6 +87,13 @@ O login precisa do `js/firebase-config.js` preenchido. Sem ele, o sistema mostra
 - Alunos com os filtros Pendentes, Em dia (sem atraso), Vence hoje, Vence em 5 dias e Atrasados. Em cada um: **Cobrar**, **Registrar pagamento** e WhatsApp direto.
 - Próximos vencimentos ainda não pagos, agrupados por dia.
 
+## Relatórios
+
+- Escolha o mês nas setas (`#/relatorios/2026-10` abre outubro).
+- Recebido x a receber, recebido por forma de pagamento, inadimplência do mês (% do previsto que está atrasado), quem está devendo hoje (todos os meses) e alunos por turma.
+- **Baixar planilha (Excel)**: arquivo CSV com separador `;` e centavos com vírgula, que o Excel em português abre direto e com acentos.
+- **Salvar em PDF**: abre a janela de impressão; escolha "Salvar como PDF". Sai só o relatório, sem menus, com o nome do professor e a data.
+
 ## Etapas da Fase 1
 
 1. Base e visual (feita)
@@ -95,5 +104,5 @@ O login precisa do `js/firebase-config.js` preenchido. Sem ele, o sistema mostra
 6. Ajustes (feita)
 7. Botão Cobrar e Cobranças de hoje (feita)
 8. Painel (feita)
-9. Relatórios
+9. Relatórios (feita)
 10. PWA e Primeiro acesso
