@@ -6,14 +6,13 @@
  * e pode ficar no front-end. Quem protege os dados são as regras do
  * Firestore (arquivo firestore.rules).
  *
- * Enquanto os valores abaixo estiverem com "COLE_AQUI", o sistema mostra
- * um aviso em vez da tela de login.
+ * Projeto Firebase: ecd-em-dia (plano Spark, gratuito).
  */
 window.FIREBASE_CONFIG = {
-  apiKey: "COLE_AQUI",
-  authDomain: "COLE_AQUI",
-  projectId: "COLE_AQUI",
-  storageBucket: "COLE_AQUI",
-  messagingSenderId: "COLE_AQUI",
-  appId: "COLE_AQUI",
+  apiKey: "AIzaSyAbLhtubrlPiQzEI0dUw0auZ8pW-Yt1-o0",
+  authDomain: "ecd-em-dia.firebaseapp.com",
+  projectId: "ecd-em-dia",
+  storageBucket: "ecd-em-dia.firebasestorage.app",
+  messagingSenderId: "1026077148151",
+  appId: "1:1026077148151:web:77bf163927816d1ec424f2",
 };
