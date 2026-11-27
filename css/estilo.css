@@ -1961,6 +1961,105 @@ button.resumo:hover {
   }
 }
 
+/* ---------- 5l. Primeiro acesso (guia) ---------- */
+.guia {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.guia-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.guia-passo {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.guia-progresso {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 4px;
+  margin: 4px 0 14px;
+}
+
+.guia-progresso span {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--areia);
+}
+
+.guia-progresso .feito {
+  background: var(--dourado);
+}
+
+.guia-cartao {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 18px;
+}
+
+.guia-icone {
+  margin-bottom: 0;
+}
+
+.guia-cartao h1 {
+  font-size: 22px;
+}
+
+.guia-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  line-height: 1.5;
+}
+
+.guia-texto p {
+  margin: 0;
+}
+
+.guia-lista {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.guia-numerada li::marker {
+  font-weight: 700;
+  color: var(--texto);
+}
+
+.guia-icone-texto {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.guia-form {
+  padding: 0;
+}
+
+.guia-final {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.guia-navegar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
 /* ---------- 6. Menu inferior (celular) ---------- */
 .menu-inferior {
   position: fixed;

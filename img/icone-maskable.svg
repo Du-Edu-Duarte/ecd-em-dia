@@ -1,0 +1,9 @@
+<!-- Versão "maskable": o desenho fica no centro (zona segura de 80%), porque o Android corta em círculo ou gota -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#15110A"/>
+  <g transform="translate(256 256) scale(0.72) translate(-256 -252)" fill="none" stroke="#E2B454" stroke-width="28" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="124" y="150" width="264" height="236" rx="32"/>
+    <path d="M196 118v64M316 118v64M124 226h264"/>
+    <path d="M200 304l40 38 76-80"/>
+  </g>
+</svg>

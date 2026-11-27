@@ -79,6 +79,16 @@ const TELAS = [
     desenhar: (container) => TelaAjustes.desenhar(container),
   },
   {
+    id: "primeiro-acesso",
+    titulo: "Primeiro acesso",
+    rotulo: "Guia",
+    icone: "guia",
+    menuInferior: false,
+    etapa: 10,
+    resumo: "Guia passo a passo: dados, aulas, alunos, cobranças, pagamentos e como instalar no celular.",
+    desenhar: (container, parametro) => TelaPrimeiroAcesso.desenhar(container, parametro),
+  },
+  {
     id: "contas",
     titulo: "Contas",
     rotulo: "Contas",
