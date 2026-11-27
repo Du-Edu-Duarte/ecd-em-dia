@@ -35,6 +35,7 @@ const TELAS = [
     menuInferior: true,
     etapa: 7,
     resumo: "Quem vence em 5 dias, vence amanhã, vence hoje ou está atrasado, com o botão Cobrar.",
+    desenhar: (container) => TelaCobrancas.desenhar(container),
   },
   {
     id: "mensalidades",

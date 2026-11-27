@@ -1405,6 +1405,117 @@ a.botao {
   }
 }
 
+/* ---------- 5i. Cobranças ---------- */
+.grupo-cobranca {
+  margin-bottom: 18px;
+}
+
+.grupo-cobranca h2 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--texto-suave);
+  margin-bottom: 8px;
+}
+
+.grupo-cobranca h2 span {
+  color: var(--texto);
+}
+
+.lista-cobrancas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cobranca {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.cobranca-feita {
+  background: var(--fundo);
+}
+
+.cobranca-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  font-size: 14px;
+  color: var(--texto-suave);
+  min-width: 0;
+}
+
+.cobranca-info strong {
+  font-size: 16px;
+  color: var(--texto);
+  overflow-wrap: anywhere;
+}
+
+.cobranca-info .etiqueta {
+  margin-top: 4px;
+}
+
+.cobranca-info small {
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.botao-enviar {
+  width: 100%;
+}
+
+.cobrar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ver-mensagem summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--toque);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.ver-mensagem .previa::before {
+  content: none;
+}
+
+.lista-envios {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+}
+
+.lista-envios li {
+  padding: 6px 0;
+  border-top: 1px solid var(--areia);
+}
+
+.lista-envios span {
+  color: var(--texto-suave);
+}
+
+@media (min-width: 600px) {
+  .cobranca {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .botao-enviar {
+    width: auto;
+    flex-shrink: 0;
+  }
+}
+
 /* ---------- 6. Menu inferior (celular) ---------- */
 .menu-inferior {
   position: fixed;

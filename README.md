@@ -16,6 +16,7 @@ ecd-em-dia/
 │   ├── config.js     nome do sistema, cores, e-mail do administrador e campos extras do cadastro
 │   ├── firebase-config.js  dados públicos do projeto Firebase (não é senha)
 │   ├── servicos/
+│   │   ├── envio.js  monta a mensagem e o link do WhatsApp e registra cada envio (fase 2: envio automático)
 │   │   ├── pagamento.js  de onde vem o {link} da mensagem (fase 1: dados do professor; fase 2: meio de pagamento)
 │   │   ├── dados.js  ler, gravar e "ouvir" os dados do professor (sincroniza celular e computador)
 │   │   └── acesso.js login, cadastro, confirmação de e-mail, aprovação (único arquivo que fala com o Firebase Auth)
@@ -23,12 +24,14 @@ ecd-em-dia/
 │   │   ├── turmas.js dias da semana, validação, dias por semana e treinos no mês (só cálculo)
 │   │   ├── alunos.js WhatsApp, CPF, valor em R$, validação, busca e ocupação das turmas
 │   │   ├── mensalidades.js vencimento (31 em fevereiro), situação, geração, pagamentos, multa e juros
-│   │   └── mensagens.js textos padrão dos lembretes (D-5, D-1, no dia, atraso) e troca das variáveis
+│   │   ├── mensagens.js textos padrão dos lembretes (D-5, D-1, no dia, atraso) e troca das variáveis
+│   │   └── cobrancas.js quem cobrar hoje (régua D-5, D-1, no dia, atraso) e se já foi enviado
 │   ├── telas/
 │   │   ├── aulas.js  tela Aulas e horários
 │   │   ├── alunos.js tela Alunos: lista, ficha, novo e editar (#/alunos, #/alunos/ID, #/alunos/ID/editar)
 │   │   ├── mensalidades.js tela Mensalidades: mês, resumo, filtros e registrar pagamento
-│   │   └── ajustes.js tela Ajustes: dados, formas de pagamento, textos, multa e juros, tema P&B
+│   │   ├── ajustes.js tela Ajustes: dados, formas de pagamento, textos, multa e juros, tema P&B
+│   │   └── cobrancas.js tela Cobranças de hoje, com o botão Enviar no WhatsApp
 │   ├── telas-acesso.js  telas Entrar, Criar conta, Esqueci a senha, Confirme seu e-mail, Aguardando aprovação
 │   ├── formato.js    datas dd/mm/aaaa, valores em R$, "hoje" no fuso de São Paulo
 │   ├── icones.js     ícones de traço (SVG), todos da mesma família
@@ -64,6 +67,15 @@ O login precisa do `js/firebase-config.js` preenchido. Sem ele, o sistema mostra
 - Situação: **Paga**, **Vence em até 5 dias**, **Vence hoje**, **Atrasada** (a partir do dia seguinte ao vencimento) ou **Em aberto**. Pagamento parcial deixa o saldo devedor.
 - Na fase 2, a mesma regra (`js/regras/mensalidades.js`) passa a rodar numa tarefa agendada no servidor.
 
+## Como funcionam as cobranças
+
+- **Cobranças de hoje** mostra quem está a 5 dias do vencimento, a 1 dia, vence hoje ou está atrasado. Quem já pagou, está trancado/inativo ou com os lembretes desligados não aparece.
+- **Enviar no WhatsApp** abre a conversa com o texto do lembrete (de Ajustes) e a forma de pagamento já preenchidos. O professor só confirma o envio no WhatsApp.
+- Cada toque fica registrado em `professores/{uid}/envios` com data e hora. O cartão passa para "Enviar de novo" e mostra a última cobrança.
+- O botão **Cobrar** na mensalidade faz o mesmo a qualquer momento, fora da régua.
+- Atrasados aparecem todos os dias até o pagamento (se deve repetir só a cada alguns dias ainda está em aberto com o cliente).
+- Na fase 2, `js/servicos/envio.js` passa a enviar sozinho pelo servidor, gravando o mesmo registro.
+
 ## Etapas da Fase 1
 
 1. Base e visual (feita)
@@ -72,7 +84,7 @@ O login precisa do `js/firebase-config.js` preenchido. Sem ele, o sistema mostra
 4. Alunos (feita)
 5. Mensalidades (feita)
 6. Ajustes (feita)
-7. Botão Cobrar e Cobranças de hoje
+7. Botão Cobrar e Cobranças de hoje (feita)
 8. Painel
 9. Relatórios
 10. PWA e Primeiro acesso
