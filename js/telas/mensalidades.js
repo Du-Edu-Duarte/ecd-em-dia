@@ -32,8 +32,9 @@ const TelaMensalidades = {
     if (this.vez !== vez) return; // o professor já foi para outra tela enquanto carregava
     if (!location.hash.startsWith("#/mensalidades")) return;
 
+    this.envios = this.detalheId ? null : [];
     const aoMudar = () => {
-      if (this.mensalidades === null || this.alunos === null) return;
+      if (this.mensalidades === null || this.alunos === null || this.envios === null) return;
       if (this.detalheId && this.container.querySelector("#form-pagamento") &&
           document.activeElement && this.container.contains(document.activeElement)) return; // não atrapalha quem digita
       this.detalheId ? this.detalhe() : this.lista();
@@ -43,6 +44,10 @@ const TelaMensalidades = {
     };
     Dados.ouvir("alunos", (a) => { this.alunos = a; aoMudar(); }, aoErrar);
     Dados.ouvir("mensalidades", (m) => { this.mensalidades = m; aoMudar(); }, aoErrar);
+    if (this.detalheId) {
+      Dados.ouvir("envios", (e) => { this.envios = e; aoMudar(); }, aoErrar,
+        (ref) => ref.where("mensalidadeId", "==", this.detalheId));
+    }
   },
 
   nomeAluno(id) {
@@ -134,6 +139,11 @@ const TelaMensalidades = {
       `<option value="${f.id}" ${f.id === ((aluno && aluno.formaPreferida) || "pix") ? "selected" : ""}>${f.rotulo}</option>`).join("");
     const nomeForma = (id) => (RegrasAlunos.FORMAS.find((f) => f.id === id) || { rotulo: id || "" }).rotulo;
     const pagamentos = m.pagamentos || [];
+    const tipoTexto = RegrasCobrancas.tipoDoTexto(m, hoje);
+    const envio = aluno ? Envio.prepararWhatsapp(m, aluno, tipoTexto) : null;
+    const enviosDela = [...this.envios].sort((x, y) =>
+      ((y.enviadoEm && y.enviadoEm.seconds) || 0) - ((x.enviadoEm && x.enviadoEm.seconds) || 0));
+    const nomeTipo = (t) => ({ d5: "5 dias antes", d1: "1 dia antes", hoje: "no dia", atraso: "atraso", manual: "manual" }[t] || t);
 
     this.container.innerHTML = `
       <div class="tela-cabecalho">
@@ -155,6 +165,15 @@ const TelaMensalidades = {
           <div class="ficha-linha"><dt>Total com encargos</dt><dd><strong>${Formato.dinheiro(enc.total)}</strong></dd></div>` : ""}
         </dl>
       </section>
+
+      ${sit.saldo > 0 && aluno ? `
+      <section class="cartao ficha-bloco cobrar">
+        <h2>Cobrar</h2>
+        <a class="botao botao-largo" id="cobrar" href="${s(envio.url)}" target="_blank" rel="noopener">${Icones.svg("whatsapp", 20)}Cobrar no WhatsApp</a>
+        <details class="ver-mensagem"><summary>Ver a mensagem</summary><p class="previa">${s(envio.texto)}</p></details>
+        ${enviosDela.length ? `<ul class="lista-envios">${enviosDela.map((e) =>
+          `<li>Cobrança enviada em ${Envio.quando(e)} <span>(${nomeTipo(e.tipo)})</span></li>`).join("")}</ul>` : ""}
+      </section>` : ""}
 
       ${sit.saldo > 0 ? `
       <form class="cartao formulario" id="form-pagamento" novalidate>
@@ -181,6 +200,10 @@ const TelaMensalidades = {
           </li>`).join("")}</ul>` : `<p class="ficha-vazio">Nenhum pagamento registrado.</p>`}
         <div id="confirmar-desfazer"></div>
       </section>`;
+
+    const cobrar = this.container.querySelector("#cobrar");
+    if (cobrar) cobrar.addEventListener("click", () =>
+      Envio.registrar(m, RegrasCobrancas.tipoDeHoje(m, hoje) || "manual").catch((e) => console.error(e)));
 
     const form = this.container.querySelector("#form-pagamento");
     if (form) form.addEventListener("submit", (e) => {
