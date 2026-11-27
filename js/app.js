@@ -38,6 +38,7 @@
     document.body.classList.toggle("modo-acesso", !liberado);
     $("botao-sair").hidden = !estado.usuario;
 
+    Dados.pararTudo();
     if (!liberado) {
       $("nome-cliente").textContent = ECD_CONFIG.nomeCliente;
       document.title = ECD_CONFIG.nomeSistema;
@@ -108,6 +109,7 @@
     if (!estado || !(estado.situacao === "ativo" || estado.situacao === "admin")) return;
 
     const tela = telaAtual();
+    Dados.pararTudo(); // fecha as listas que a tela anterior estava ouvindo
     if (tela.desenhar) tela.desenhar($("conteudo"));
     else $("conteudo").innerHTML = desenharTela(tela);
     document.title = `${tela.titulo} | ${ECD_CONFIG.nomeSistema}`;

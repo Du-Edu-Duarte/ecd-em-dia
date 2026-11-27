@@ -26,6 +26,8 @@ const Icones = {
       '<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l5-5-5-5"/><path d="M15 12H4"/>',
     mais:
       '<circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/>',
+    "mais-item": '<path d="M12 5v14"/><path d="M5 12h14"/>',
+    voltar: '<path d="M15 6l-6 6 6 6"/>',
     fechar: '<path d="M6 6l12 12"/><path d="M18 6L6 18"/>',
     seta: '<path d="M9 6l6 6-6 6"/>',
     vazio:

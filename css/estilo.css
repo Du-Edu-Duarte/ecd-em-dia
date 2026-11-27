@@ -295,6 +295,12 @@ button {
   border-radius: 10px;
 }
 
+.campo input[type="time"] {
+  min-width: 0; /* no iPhone, o campo de hora não estoura a coluna */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 .campo input:focus {
   outline: 2px solid var(--dourado);
   outline-offset: 0;
@@ -472,6 +478,203 @@ button {
   color: var(--erro);
   border-color: #F0C8C5;
   background: #FBEDEC;
+}
+
+/* ---------- 5e. Telas com lista e formulário (Aulas e as próximas) ---------- */
+.tela-cabecalho-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tela-resumo {
+  margin-top: 2px;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.botao-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: var(--toque);
+  margin-left: -8px;
+  padding: 0 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--texto-suave);
+}
+
+.lista-turmas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.turma {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 72px;
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.turma:hover {
+  border-color: var(--dourado);
+}
+
+.turma > .icone {
+  color: var(--texto-suave);
+}
+
+.turma-horario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 64px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: var(--fundo);
+  border: 1px solid var(--areia);
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.turma-horario small {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--texto-suave);
+}
+
+.turma-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.turma-info strong {
+  font-size: 16px;
+  color: var(--texto);
+  overflow-wrap: anywhere;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 560px;
+}
+
+.campo-linha {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); /* minmax(0,...) impede o campo de hora de estourar */
+  gap: 12px;
+}
+
+.campo-dias {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.campo-dias legend {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0;
+  margin-bottom: 6px;
+}
+
+/* 7 botões de dia: no celular ficam em 4 + 3, no computador em uma linha */
+.dias {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.dia {
+  position: relative;
+}
+
+.dia input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.dia span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--toque);
+  border: 1px solid #CFC6B4;
+  border-radius: 10px;
+  background: var(--branco);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.dia input:checked + span {
+  background: var(--preto);
+  border-color: var(--preto);
+  color: var(--fundo);
+}
+
+.dia input:focus-visible + span {
+  outline: 2px solid var(--dourado);
+  outline-offset: 2px;
+}
+
+.formulario-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.formulario-acoes .botao {
+  flex: 1 1 140px;
+}
+
+.zona-excluir {
+  border-top: 1px solid var(--areia);
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.botao-perigo {
+  color: var(--erro);
+  align-self: flex-start;
+  margin-left: -8px;
+}
+
+.botao-perigo-cheio {
+  background: var(--erro);
+  color: var(--branco);
+}
+
+.excluir-pergunta {
+  font-size: 15px;
+}
+
+@media (min-width: 600px) {
+  .dias {
+    grid-template-columns: repeat(7, 1fr);
+  }
 }
 
 /* ---------- 6. Menu inferior (celular) ---------- */
