@@ -4,10 +4,12 @@
  *
  * Régua: d5 (faltam 5 dias), d1 (falta 1 dia), hoje (vence hoje), atraso (venceu e não pagou).
  * Não entra: mensalidade paga, aluno trancado ou inativo, aluno com lembretes desligados.
- * Atrasados aparecem todo dia, com a data da última cobrança, até o pagamento.
- * (Se o atraso deve ser lembrado só a cada 3 ou 7 dias ainda está em aberto com o cliente.)
+ * Atraso: aparece no dia seguinte ao vencimento e depois a cada 2 dias (contados da
+ * última cobrança enviada), até o pagamento. Se o professor pular um dia, aparece no seguinte.
  */
 const RegrasCobrancas = {
+  REPETIR_ATRASO: 2, // dias entre um aviso de atraso e o próximo (pedido do cliente)
+
   // Tipo de lembrete que cabe HOJE para a mensalidade, ou "" se não for dia de lembrete
   tipoDeHoje(m, hoje) {
     const sit = RegrasMensalidades.situacao(m, hoje);
@@ -38,6 +40,12 @@ const RegrasCobrancas = {
       if (!tipo) return;
       const enviosDela = envios.filter((e) => e.mensalidadeId === m.id).sort((a, b) => (b.dia || "").localeCompare(a.dia || ""));
       const enviadoHoje = enviosDela.some((e) => e.dia === hoje);
+      // Atraso já cobrado há menos de 2 dias: fica de fora até a próxima vez
+      if (tipo === "atraso" && !enviadoHoje) {
+        const ultimoAtraso = enviosDela.find((e) => e.tipo === "atraso" || e.tipo === "manual");
+        if (ultimoAtraso && ultimoAtraso.dia > m.vencimento &&
+            RegrasMensalidades.diasEntre(ultimoAtraso.dia, hoje) < this.REPETIR_ATRASO) return;
+      }
       grupos[tipo].push({ m, aluno, tipo, enviadoHoje, ultimoEnvio: enviosDela[0] || null });
     });
     // Quem ainda não recebeu hoje vem primeiro; atrasados mais antigos antes

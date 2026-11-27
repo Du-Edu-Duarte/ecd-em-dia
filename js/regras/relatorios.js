@@ -7,7 +7,7 @@
  * Alunos por turma: alunos ativos em cada turma e quem está sem turma.
  */
 const RegrasRelatorios = {
-  FORMAS: { pix: "Pix", cartao: "Cartão", boleto: "Boleto", dinheiro: "Dinheiro" },
+  FORMAS: { pix: "Pix", cartao: "Cartão", boleto: "Boleto", dinheiro: "Dinheiro", outro: "Transferência ou outra" },
 
   r(n) {
     return Math.round(n * 100) / 100;

@@ -21,6 +21,7 @@ const TelasAcesso = {
       verificar: () => this.verificar(),
       pendente: () => this.pendente(),
       bloqueado: () => this.bloqueado(),
+      "plano-vencido": () => this.planoVencido(),
     };
     container.innerHTML = `<div class="acesso">${(telas[estado.situacao] || telas.deslogado)()}</div>`;
     this.ligarEventos();
@@ -110,6 +111,19 @@ const TelasAcesso = {
   bloqueado() {
     return `<div class="cartao acesso-cartao">
       ${this.cabecalho("Conta bloqueada", "O acesso desta conta está suspenso. Fale com a ECD Tecnologia para resolver.")}
+      <button class="botao-link" type="button" data-acao="sair">Sair</button>
+    </div>`;
+  },
+
+  planoVencido() {
+    const p = (this.estado.perfil || {}).plano || {};
+    const contato = ECD_CONFIG.contatoECD || {};
+    const texto = `Olá! Quero renovar o meu plano do ${ECD_CONFIG.nomeSistema}.`;
+    const zap = contato.whatsapp ? `https://wa.me/55${contato.whatsapp}?text=${encodeURIComponent(texto)}` : "";
+    return `<div class="cartao acesso-cartao">
+      ${this.cabecalho("Seu plano venceu", `O plano venceu em ${Formato.data(p.fim)}. Seus alunos e mensalidades estão guardados: é só renovar para voltar a usar.`)}
+      ${zap ? `<a class="botao botao-largo" href="${zap}" target="_blank" rel="noopener">${Icones.svg("whatsapp", 20)}Falar com a ECD no WhatsApp</a>` : ""}
+      ${contato.email ? `<a class="botao ${zap ? "botao-secundario" : ""} botao-largo" href="mailto:${contato.email}?subject=${encodeURIComponent("Renovar plano " + ECD_CONFIG.nomeSistema)}">Enviar e-mail para a ECD</a>` : ""}
       <button class="botao-link" type="button" data-acao="sair">Sair</button>
     </div>`;
   },

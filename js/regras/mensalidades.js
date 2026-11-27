@@ -75,10 +75,16 @@ const RegrasMensalidades = {
    *   para não cobrar meses antigos de quem já estava pagando antes do sistema.
    * - A primeira mensalidade é a do primeiro vencimento a partir da data de início.
    * - Vai até o mês atual, e inclui o mês seguinte se ele vence em até 5 dias (para o lembrete D-5).
+   * - Plano trimestral, semestral ou anual: uma cobrança a cada 3, 6 ou 12 meses,
+   *   contando da primeira (aluno.periodo; sem período, todo mês).
    */
   paraGerar(aluno, hoje, cadastradoEm) {
     if (aluno.status !== "ativo" || !aluno.diaVencimento || !(aluno.valor > 0)) return [];
     const inicio = aluno.inicio || cadastradoEm || hoje;
+    // Mês da primeira cobrança: o do início, ou o seguinte se o vencimento daquele mês já tinha passado
+    const passo = { trimestral: 3, semestral: 6, anual: 12 }[aluno.periodo] || 1;
+    const [anoIni, mesIni] = inicio.split("-").map(Number);
+    const primeiro = anoIni * 12 + mesIni + (this.vencimentoEm(anoIni, mesIni, aluno.diaVencimento) < inicio ? 1 : 0);
     const base = cadastradoEm && cadastradoEm > inicio ? cadastradoEm : inicio;
     let [ano, mes] = base.split("-").map(Number);
     const [anoHoje, mesHoje] = hoje.split("-").map(Number);
@@ -87,7 +93,8 @@ const RegrasMensalidades = {
       const vencimento = this.vencimentoEm(ano, mes, aluno.diaVencimento);
       const depoisDeHoje = ano * 12 + mes > anoHoje * 12 + mesHoje;
       if (depoisDeHoje && this.diasEntre(hoje, vencimento) > this.DIAS_AVISO) break;
-      if (vencimento >= inicio) lista.push({ competencia: this.competencia(ano, mes), vencimento });
+      const indice = ano * 12 + mes;
+      if (indice >= primeiro && (indice - primeiro) % passo === 0) lista.push({ competencia: this.competencia(ano, mes), vencimento });
       if (depoisDeHoje) break;
       [ano, mes] = this.somarMeses(ano, mes, 1);
     }

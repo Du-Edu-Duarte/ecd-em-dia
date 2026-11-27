@@ -37,3 +37,16 @@ test("marca quem já recebeu hoje e manda para o fim", () => {
 test("usa o primeiro nome na mensagem", () => {
   assert.equal(R.primeiroNome("  Ana Clara Souza "), "Ana");
 });
+
+test("atraso volta a aparecer 2 dias depois da última cobrança", () => {
+  const mens = [m("at", "2026-11-20")];
+  const alunos = [aluno("at")];
+  const envio = (dia, tipo = "atraso") => ({ mensalidadeId: "at", dia, tipo });
+  const ids = (envios, dia) => R.deHoje(mens, alunos, envios, dia).atraso.map((x) => x.m.id);
+  assert.deepEqual(ids([], "2026-11-21"), ["at"]);                               // 1º dia de atraso
+  assert.deepEqual(ids([envio("2026-11-21")], "2026-11-21"), ["at"]);            // enviado hoje: continua, como "Enviar de novo"
+  assert.deepEqual(ids([envio("2026-11-21")], "2026-11-22"), []);                // dia seguinte: descansa
+  assert.deepEqual(ids([envio("2026-11-21")], "2026-11-23"), ["at"]);            // 2 dias depois: de novo
+  assert.deepEqual(ids([envio("2026-11-21")], "2026-11-25"), ["at"]);            // professor pulou: aparece
+  assert.deepEqual(ids([envio("2026-11-19", "d1")], "2026-11-21"), ["at"]);      // lembrete de antes do vencimento não conta
+});

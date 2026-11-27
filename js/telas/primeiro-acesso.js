@@ -64,8 +64,8 @@ const TelaPrimeiroAcesso = {
           <label class="campo"><span>Seu WhatsApp</span>
             <input id="telefone" type="tel" value="${s((p.extras || {}).telefone)}" placeholder="(11) 91234-5678" /></label>
           <label class="campo"><span>Chave Pix</span>
-            <input id="pix" type="text" maxlength="140" value="${s((p.formasPagamento || {}).pix)}" placeholder="CPF, e-mail, celular ou chave aleatória" /></label>
-          <p class="campo-dica">Links de cartão e boleto, textos das mensagens e multa ficam em Ajustes.</p>
+            <input id="pix" type="text" maxlength="140" value="${s((RegrasFormas.doPerfil(p).find((f) => f.tipo === "pix") || {}).valor)}" placeholder="CPF, e-mail, celular ou chave aleatória" /></label>
+          <p class="campo-dica">Outras formas (Pix copia e cola, link de cartão, boleto, transferência), os textos das mensagens e a multa ficam em Ajustes.</p>
         </form>`,
       3: () => `
         <p>Cadastre suas turmas com os dias da semana, o horário e as vagas.</p>
@@ -81,7 +81,7 @@ const TelaPrimeiroAcesso = {
           <li>5 dias antes do vencimento</li>
           <li>1 dia antes</li>
           <li>no dia do pagamento</li>
-          <li>em atraso, a partir do dia seguinte</li>
+          <li>em atraso: no dia seguinte e depois a cada 2 dias, até pagar</li>
         </ul>
         <p>Toque em <strong>Enviar no WhatsApp</strong>: a conversa abre com a mensagem e o Pix prontos, e você só confirma o envio.</p>`,
       6: () => `
@@ -194,7 +194,7 @@ const TelaPrimeiroAcesso = {
       await Dados.salvarPerfil({
         nome,
         extras: { ...(p.extras || {}), telefone: telefone ? RegrasAlunos.formatarWhatsapp(telefone) : "" },
-        formasPagamento: { ...(p.formasPagamento || {}), pix: valor("pix") },
+        formas: this.comPix(RegrasFormas.doPerfil(p), valor("pix")),
       });
       document.getElementById("nome-cliente").textContent = nome;
       return true;
@@ -205,6 +205,16 @@ const TelaPrimeiroAcesso = {
     } finally {
       botao.disabled = false;
     }
+  },
+
+  // Troca (ou cria, ou remove) a chave Pix na lista de formas, mantendo as outras
+  comPix(formas, chave) {
+    const lista = formas.map((f) => ({ id: f.id, tipo: f.tipo, nome: f.nome || "", valor: f.valor }));
+    const i = lista.findIndex((f) => f.tipo === "pix");
+    if (i >= 0 && chave) lista[i].valor = chave;
+    else if (i >= 0) lista.splice(i, 1);
+    else if (chave) lista.unshift({ id: RegrasFormas.novoId(), tipo: "pix", nome: "", valor: chave });
+    return lista;
   },
 
   // Marca que o guia foi visto (não abre mais sozinho) e segue para a tela escolhida

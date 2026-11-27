@@ -57,7 +57,8 @@ const TelaRelatorios = {
     this.container.innerHTML = `
       <div class="tela-cabecalho">
         <h1>Relatórios</h1>
-        <p class="so-impressao relatorio-assinatura">${s(ECD_CONFIG.nomeSistema)} · ${s(perfil.nome || "")} · gerado em ${Formato.data(hoje)}</p>
+        <p class="so-impressao relatorio-assinatura">${(perfil.marca || {}).logo ? `<img class="relatorio-logo" src="${(perfil.marca || {}).logo}" alt="" />` : ""}
+          ${s(perfil.nome || "")} · gerado em ${Formato.data(hoje)} pelo ${s(ECD_CONFIG.nomeSistema)}</p>
       </div>
       <div class="seletor-mes">
         <a class="botao-icone" href="#/relatorios/${anterior}" aria-label="Mês anterior">${Icones.svg("voltar", 22)}</a>

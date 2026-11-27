@@ -140,8 +140,13 @@ const TelaAlunos = {
     const s = Formato.seguro;
     const turmas = RegrasAlunos.turmasDoAluno(a, this.turmas);
     const [ano, mes] = Formato.hojeISO().split("-").map(Number);
-    const forma = (RegrasAlunos.FORMAS.find((f) => f.id === a.formaPreferida) || {}).rotulo;
+    const formasProf = RegrasFormas.doPerfil(Acesso.estado.perfil);
+    const usadas = RegrasFormas.doAluno(formasProf, a.formaPreferida);
+    const forma = !formasProf.length ? "" : usadas.length === 1 && formasProf.length > 1 ? RegrasFormas.rotulo(usadas[0]) : "Todas as formas";
     const linha = (rotulo, valor) => valor ? `<div class="ficha-linha"><dt>${rotulo}</dt><dd>${valor}</dd></div>` : "";
+    const plano = this.planoDoAluno(a);
+    const periodo = RegrasPlanos.periodo(a.periodo);
+    const avisoPlano = RegrasPlanos.avisoFrequencia(plano, RegrasTurmas.diasPorSemana(turmas));
 
     this.container.innerHTML = `
       <div class="tela-cabecalho">
@@ -157,13 +162,15 @@ const TelaAlunos = {
       </div>
 
       <section class="cartao ficha-bloco">
-        <h2>Mensalidade</h2>
+        <h2>Plano e pagamento</h2>
         <dl>
-          ${linha("Valor", Formato.dinheiro(a.valor))}
-          ${linha("Vencimento", `Todo dia ${a.diaVencimento}`)}
-          ${linha("Forma preferida", forma)}
+          ${linha("Plano", plano ? s(RegrasPlanos.nome(plano)) : periodo.meses > 1 ? periodo.rotulo : "")}
+          ${linha("Valor", `${Formato.dinheiro(a.valor)}${periodo.meses > 1 ? ` a cada ${periodo.meses} meses` : " por mês"}`)}
+          ${linha("Vencimento", periodo.meses > 1 ? `Dia ${a.diaVencimento}, a cada ${periodo.meses} meses` : `Todo dia ${a.diaVencimento}`)}
+          ${linha("Forma de pagamento", forma)}
           ${linha("Lembretes", a.lembretesAtivos === false ? "Desligados" : "Ligados")}
         </dl>
+        ${avisoPlano ? `<p class="aviso aviso-alerta">${avisoPlano}</p>` : ""}
       </section>
 
       <section class="cartao ficha-bloco">
@@ -221,7 +228,7 @@ const TelaAlunos = {
     const s = Formato.seguro;
     const a = aluno || {
       nome: "", whatsapp: "", email: "", cpf: "", inicio: Formato.hojeISO(), valor: null,
-      diaVencimento: null, formaPreferida: "pix", turmas: [], anotacoes: "", status: "ativo", lembretesAtivos: true,
+      diaVencimento: null, planoId: "", periodo: "mensal", formaPreferida: "todas", turmas: [], anotacoes: "", status: "ativo", lembretesAtivos: true,
     };
     const ocupacao = RegrasAlunos.ocupacao(this.alunos.filter((x) => !aluno || x.id !== aluno.id));
 
@@ -239,6 +246,20 @@ const TelaAlunos = {
     const opcoes = (lista, atual) => lista.map((o) =>
       `<option value="${o.id}" ${o.id === atual ? "selected" : ""}>${o.rotulo}</option>`).join("");
     const voltarPara = aluno ? `#/alunos/${s(aluno.id)}` : "#/alunos";
+    // Formas que o professor cadastrou em Ajustes; a preferida antiga (pix, cartao...) é achada pelo tipo
+    const formasProf = RegrasFormas.doPerfil(Acesso.estado.perfil);
+    const atual = RegrasFormas.doAluno(formasProf, a.formaPreferida);
+    const idAtual = atual.length === 1 && formasProf.length > 1 ? atual[0].id : "todas";
+    const opcoesForma = [{ id: "todas", rotulo: formasProf.length ? "Todas as que eu cadastrei" : "Cadastre as formas em Ajustes" }]
+      .concat(formasProf.length > 1 ? formasProf.map((f) => ({ id: f.id, rotulo: RegrasFormas.rotulo(f) })) : [])
+      .map((o) => `<option value="${s(o.id)}" ${o.id === idAtual ? "selected" : ""}>${s(o.rotulo)}</option>`).join("");
+
+    // Planos que o professor cadastrou em Ajustes
+    const planos = RegrasPlanos.ordenar(this.planosDoProfessor());
+    const opcoesPlano = [`<option value="">${planos.length ? "Sem plano (valor livre)" : "Cadastre os planos em Ajustes"}</option>`]
+      .concat(planos.map((p) => `<option value="${s(p.id)}" ${p.id === a.planoId ? "selected" : ""}>${s(RegrasPlanos.nome(p))} · ${Formato.dinheiro(p.valor)}</option>`)).join("");
+    const opcoesPeriodo = RegrasPlanos.PERIODOS.map((p) =>
+      `<option value="${p.id}" ${p.id === (a.periodo || "mensal") ? "selected" : ""}>${p.rotulo}</option>`).join("");
 
     this.container.innerHTML = `
       <div class="tela-cabecalho">
@@ -253,17 +274,23 @@ const TelaAlunos = {
         <label class="campo"><span>WhatsApp com DDD</span>
           <input id="whatsapp" type="tel" inputmode="tel" value="${s(RegrasAlunos.formatarWhatsapp(a.whatsapp))}" placeholder="(11) 91234-5678" required /></label>
 
+        <label class="campo"><span>Plano</span>
+          <select id="plano">${opcoesPlano}</select></label>
         <div class="campo-linha">
-          <label class="campo"><span>Mensalidade (R$)</span>
+          <label class="campo"><span>Cobrança</span>
+            <select id="periodo">${opcoesPeriodo}</select></label>
+          <label class="campo"><span>Valor (R$)</span>
             <input id="valor" type="text" inputmode="decimal" value="${RegrasAlunos.valorParaCampo(a.valor)}" placeholder="150,00" required /></label>
+        </div>
+        <div class="campo-linha">
           <label class="campo"><span>Dia do vencimento</span>
             <input id="dia" type="number" inputmode="numeric" min="1" max="31" step="1" value="${a.diaVencimento || ""}" placeholder="10" required /></label>
         </div>
-        <p class="campo-dica">Se o mês não tiver o dia (por exemplo, 31 em fevereiro), o vencimento cai no último dia do mês.</p>
+        <p class="campo-dica">Escolher o plano preenche a cobrança e o valor (dá para mudar o valor, por exemplo, para um desconto). Se o mês não tiver o dia (31 em fevereiro), o vencimento cai no último dia.</p>
 
         <div class="campo-linha">
-          <label class="campo"><span>Forma preferida</span>
-            <select id="forma">${opcoes(RegrasAlunos.FORMAS, a.formaPreferida)}</select></label>
+          <label class="campo"><span>Forma de pagamento na cobrança</span>
+            <select id="forma">${opcoesForma}</select></label>
           <label class="campo"><span>Situação</span>
             <select id="status">${opcoes(RegrasAlunos.STATUS, a.status)}</select></label>
         </div>
@@ -304,6 +331,14 @@ const TelaAlunos = {
 
     const form = this.container.querySelector("#form-aluno");
     form.querySelectorAll('input[name="turma"]').forEach((c) => c.addEventListener("change", () => this.atualizarCalculo()));
+    form.querySelector("#plano").addEventListener("change", (e) => {
+      const p = planos.find((x) => x.id === e.target.value);
+      if (p) {
+        form.querySelector("#periodo").value = p.periodo;
+        form.querySelector("#valor").value = RegrasAlunos.valorParaCampo(p.valor);
+      }
+      this.atualizarCalculo();
+    });
     this.atualizarCalculo();
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -312,6 +347,14 @@ const TelaAlunos = {
     const excluir = form.querySelector("#excluir");
     if (excluir) excluir.addEventListener("click", () => this.confirmarExclusao(aluno));
     if (!aluno) form.querySelector("#nome").focus();
+  },
+
+  planosDoProfessor() {
+    return (Acesso.estado.perfil || {}).planos || [];
+  },
+
+  planoDoAluno(a) {
+    return this.planosDoProfessor().find((p) => p.id === a.planoId) || null;
   },
 
   turmasMarcadas() {
@@ -326,7 +369,9 @@ const TelaAlunos = {
     if (!turmas.length) { el.textContent = ""; return; }
     const [ano, mes] = Formato.hojeISO().split("-").map(Number);
     const nomeMes = new Intl.DateTimeFormat("pt-BR", { month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(ano, mes - 1, 1)));
-    el.textContent = `Treina ${RegrasTurmas.diasPorSemana(turmas)} dias por semana · ${RegrasTurmas.treinosNoMes(turmas, ano, mes)} treinos em ${nomeMes}`;
+    const plano = this.planosDoProfessor().find((p) => p.id === this.container.querySelector("#plano").value);
+    const aviso = RegrasPlanos.avisoFrequencia(plano, RegrasTurmas.diasPorSemana(turmas));
+    el.textContent = `Treina ${RegrasTurmas.diasPorSemana(turmas)} dias por semana · ${RegrasTurmas.treinosNoMes(turmas, ano, mes)} treinos em ${nomeMes}${aviso ? `. ${aviso}` : ""}`;
   },
 
   lerFormulario() {
@@ -341,6 +386,8 @@ const TelaAlunos = {
       inicio: v("inicio"),
       valor: RegrasAlunos.lerValor(v("valor")),
       diaVencimento: diaTexto === "" ? null : Number(diaTexto),
+      planoId: v("plano"),
+      periodo: v("periodo"),
       formaPreferida: v("forma"),
       turmas: turmas.map((t) => t.id),
       diasPorSemana: RegrasTurmas.diasPorSemana(turmas), // calculado, nunca digitado

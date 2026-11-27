@@ -73,7 +73,13 @@ const Acesso = {
 
     if (!doc.exists) return { situacao: "pendente", usuario, perfil: null };
     const perfil = doc.data();
-    const situacao = perfil.status === "ativo" ? "ativo" : perfil.status === "bloqueado" ? "bloqueado" : "pendente";
+    let situacao = perfil.status === "ativo" ? "ativo" : perfil.status === "bloqueado" ? "bloqueado" : "pendente";
+    // Plano do sistema vencido e fora da tolerância: as regras do Firestore já travam os dados;
+    // aqui só mostramos a tela certa em vez de erros
+    if (situacao === "ativo" &&
+        RegrasAssinatura.situacao(perfil.plano, Formato.hojeISO(), ECD_CONFIG.assinatura).codigo === "vencido") {
+      situacao = "plano-vencido";
+    }
     return { situacao, usuario, perfil };
   },
 
@@ -119,6 +125,27 @@ const Acesso = {
     return snap.docs
       .map((d) => ({ uid: d.id, ...d.data() }))
       .sort((a, b) => (b.criadoEm?.seconds || 0) - (a.criadoEm?.seconds || 0));
+  },
+
+  // Libera ou renova o plano do sistema de um cliente (só o administrador consegue gravar)
+  async renovarPlano(uid, planoAtual, meses, valor) {
+    const tolerancia = ECD_CONFIG.assinatura.diasTolerancia;
+    const plano = RegrasAssinatura.renovar(planoAtual, meses, valor, Formato.hojeISO(), tolerancia);
+    // Data em que trava, para as regras do Firestore: meia-noite (São Paulo) do dia depois de liberadoAte
+    plano.travaEm = plano.liberadoAte
+      ? firebase.firestore.Timestamp.fromDate(new Date(`${RegrasAssinatura.somarDias(plano.liberadoAte, 1)}T00:00:00-03:00`))
+      : null;
+    await this.db.collection("professores").doc(uid).update({
+      plano, planoAlteradoEm: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    return plano;
+  },
+
+  // Tira o controle de prazo (cortesia ou conta da casa)
+  removerPlano(uid) {
+    return this.db.collection("professores").doc(uid).update({
+      plano: null, planoAlteradoEm: firebase.firestore.FieldValue.serverTimestamp(),
+    });
   },
 
   mudarStatus(uid, status) {

@@ -30,6 +30,7 @@
 
 /* Tema P&B (vai ser ligado em Ajustes, na etapa 6) */
 :root[data-tema="pb"] {
+  --preto: #15110A !important;   /* P&B ignora as cores da marca do professor */
   --dourado: #9A9A9A !important; /* cinza no lugar do dourado: aparece no fundo preto e no branco */
   --areia: #E5E5E5 !important;
   --fundo: #FFFFFF !important;
@@ -106,6 +107,21 @@ button {
   padding-top: max(8px, env(safe-area-inset-top));
   background: var(--preto);
   color: var(--fundo);
+}
+
+.topo-esquerda {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.topo-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .topo-marca {
@@ -451,6 +467,106 @@ button {
 
 .conta-acoes .botao {
   flex: 1 1 120px;
+}
+
+/* Contas e planos (administrador) */
+.resumo-cartoes.contas-cartoes .resumo-alerta {
+  grid-column: auto;
+}
+
+button.resumo {
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.filtros-contas {
+  margin-bottom: 12px;
+}
+
+.filtros-contas .filtro:first-child {
+  grid-column: 1 / -1;
+}
+
+.lista-contas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.conta-plano {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--fundo);
+  font-size: 14px;
+}
+
+.conta-plano-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.conta-plano small {
+  color: var(--texto-suave);
+  font-size: 13px;
+}
+
+.barra-plano {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--areia);
+  overflow: hidden;
+}
+
+.barra-plano span {
+  display: block;
+  height: 100%;
+  background: var(--dourado);
+}
+
+.conta-form-plano {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--areia);
+}
+
+.conta-form-plano[hidden] {
+  display: none;
+}
+
+.conta-historico summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--toque);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.conta-historico ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+
+@media (min-width: 900px) {
+  .resumo-cartoes.contas-cartoes {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .filtros-contas .filtro:first-child {
+    grid-column: auto;
+  }
 }
 
 .etiqueta {
@@ -1405,6 +1521,106 @@ a.botao {
   }
 }
 
+/* Formas de pagamento (Ajustes): uma caixa por forma */
+.lista-formas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.forma {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--areia);
+  border-radius: var(--raio);
+  background: var(--fundo);
+}
+
+.forma-topo {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.forma-topo .campo {
+  flex: 1;
+  min-width: 0;
+}
+
+.forma-remover {
+  flex-shrink: 0;
+  color: var(--erro);
+}
+
+/* Marca do professor (Ajustes) */
+.marca-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.marca-previa {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--areia);
+}
+
+.marca-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.botao-arquivo {
+  position: relative;
+  cursor: pointer;
+}
+
+.botao-arquivo input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.campo-cor input[type="color"] {
+  width: 100%;
+  min-height: var(--toque);
+  padding: 4px;
+  cursor: pointer;
+}
+
+/* Faixa do plano do sistema (abaixo do topo) */
+.faixa-plano {
+  display: flex;
+  align-items: center;
+  min-height: var(--toque);
+  padding: 8px 16px;
+  background: #FBF3E2;
+  border-bottom: 1px solid #E8CF9C;
+  color: #7A4D00;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.faixa-plano[hidden] {
+  display: none;
+}
+
+.faixa-urgente {
+  background: #FDECEA;
+  border-color: #F2B8B5;
+  color: var(--erro);
+}
+
 /* ---------- 5i. Cobranças ---------- */
 .grupo-cobranca {
   margin-bottom: 18px;
@@ -1918,6 +2134,19 @@ button.resumo:hover {
 
   .so-impressao {
     display: block;
+  }
+
+  .relatorio-assinatura {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .relatorio-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
   }
 
   .conteudo {
