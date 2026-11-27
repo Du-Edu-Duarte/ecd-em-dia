@@ -66,6 +66,7 @@ const TELAS = [
     menuInferior: false,
     etapa: 9,
     resumo: "Recebido e a receber, inadimplência, alunos por turma e exportação.",
+    desenhar: (container, parametro) => TelaRelatorios.desenhar(container, parametro),
   },
   {
     id: "ajustes",
