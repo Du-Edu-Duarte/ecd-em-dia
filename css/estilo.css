@@ -677,6 +677,389 @@ button {
   }
 }
 
+/* ---------- 5f. Alunos: lista, ficha e formulário ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+a.botao {
+  text-decoration: none;
+}
+
+.barra-busca {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.campo-busca {
+  position: relative;
+}
+
+.campo-busca .icone {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--texto-suave);
+  pointer-events: none;
+}
+
+.campo-busca input {
+  padding-left: 42px;
+}
+
+/* Filtros: 2 por linha no celular (nada rola para o lado), uma linha no computador */
+.filtros {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.filtro {
+  flex-shrink: 0;
+  min-height: var(--toque);
+  padding: 0 14px;
+  border: 1px solid #CFC6B4;
+  border-radius: 999px;
+  background: var(--branco);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.filtro span {
+  color: var(--texto-suave);
+  margin-left: 2px;
+}
+
+.filtro.ativo {
+  background: var(--preto);
+  border-color: var(--preto);
+  color: var(--fundo);
+}
+
+.filtro.ativo span {
+  color: var(--dourado);
+}
+
+.lista-alunos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lista-vazia,
+.ficha-vazio {
+  color: var(--texto-suave);
+  font-size: 15px;
+}
+
+.lista-vazia {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.aluno {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 0 0;
+}
+
+.aluno:hover {
+  border-color: var(--dourado);
+}
+
+.aluno-principal {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 72px;
+  justify-content: center;
+  padding: 12px 0 12px 16px;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.aluno-nome {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--texto);
+  overflow-wrap: anywhere;
+}
+
+.aluno-nome .etiqueta {
+  margin-left: 6px;
+  vertical-align: 2px;
+}
+
+.botao-whatsapp {
+  flex-shrink: 0;
+  border: 1px solid var(--areia);
+  color: var(--preto);
+}
+
+.ficha-titulo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.ficha-titulo h1 {
+  overflow-wrap: anywhere;
+}
+
+.ficha-acoes {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.ficha-acoes .botao {
+  flex: 1;
+}
+
+.ficha-bloco {
+  margin-bottom: 12px;
+  padding: 16px;
+}
+
+.ficha-bloco h2 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--texto-suave);
+  margin-bottom: 10px;
+}
+
+.ficha-bloco dl {
+  margin: 0;
+}
+
+.ficha-linha {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid var(--areia);
+}
+
+.ficha-linha:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.ficha-linha dt {
+  color: var(--texto-suave);
+  flex-shrink: 0;
+}
+
+.ficha-linha dd {
+  margin: 0;
+  text-align: right;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.ficha-destaque {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.ficha-turmas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ficha-turmas li {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  border-top: 1px solid var(--areia);
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.ficha-turmas strong {
+  color: var(--texto);
+  font-size: 15px;
+}
+
+.ficha-anotacoes {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.campo select,
+.campo textarea {
+  width: 100%;
+  min-height: var(--toque);
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--texto);
+  background: var(--branco);
+  border: 1px solid #CFC6B4;
+  border-radius: 10px;
+}
+
+.campo textarea {
+  resize: vertical;
+}
+
+.campo select:focus,
+.campo textarea:focus {
+  outline: 2px solid var(--dourado);
+  outline-offset: 0;
+  border-color: var(--preto);
+}
+
+.campo-dica {
+  margin-top: -10px;
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+
+.campo-turmas {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.campo-turmas legend {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0;
+  margin-bottom: 6px;
+}
+
+.opcoes-turmas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opcao-turma {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: var(--toque);
+  padding: 10px 12px;
+  border: 1px solid #CFC6B4;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.opcao-turma:has(input:checked) {
+  border-color: var(--preto);
+  background: var(--fundo);
+}
+
+.opcao-turma input {
+  width: 22px;
+  height: 22px;
+  margin: 1px 0 0;
+  flex-shrink: 0;
+  accent-color: var(--preto);
+}
+
+.opcao-turma span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.opcao-turma strong {
+  color: var(--texto);
+  font-size: 15px;
+}
+
+.opcao-turma em {
+  font-style: normal;
+  font-size: 13px;
+}
+
+.opcao-turma em.lotada {
+  color: var(--alerta);
+  font-weight: 600;
+}
+
+.calculo-treino {
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.calculo-treino:empty {
+  display: none;
+}
+
+.mais-campos {
+  border: 1px solid var(--areia);
+  border-radius: 10px;
+}
+
+.mais-campos summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--toque);
+  padding: 0 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.mais-campos-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 4px 12px 14px;
+}
+
+.etiqueta-trancado {
+  color: var(--alerta);
+  border-color: #E8CF9C;
+  background: #FBF3E2;
+}
+
+.etiqueta-inativo {
+  color: var(--texto-suave);
+  border-color: var(--areia);
+  background: var(--fundo);
+}
+
+@media (min-width: 900px) {
+  .barra-busca {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .campo-busca {
+    flex: 1;
+  }
+
+  .filtros {
+    display: flex;
+  }
+
+  .ficha-acoes {
+    max-width: 420px;
+  }
+}
+
 /* ---------- 6. Menu inferior (celular) ---------- */
 .menu-inferior {
   position: fixed;

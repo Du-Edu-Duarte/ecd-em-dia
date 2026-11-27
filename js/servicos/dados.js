@@ -53,4 +53,23 @@ const Dados = {
   excluir(nome, id) {
     return this.colecao(nome).doc(id).delete();
   },
+
+  // Exclui uma turma e, na mesma operação, tira a turma dos alunos que treinavam nela
+  // (recalculando os dias por semana). Ou tudo dá certo, ou nada muda.
+  async excluirTurma(turmaId) {
+    const turmas = (await this.listar("turmas")).filter((t) => t.id !== turmaId);
+    const alunos = (await this.listar("alunos")).filter((a) => (a.turmas || []).includes(turmaId));
+    const lote = Acesso.db.batch();
+    const agora = firebase.firestore.FieldValue.serverTimestamp();
+    alunos.forEach((a) => {
+      const restantes = (a.turmas || []).filter((id) => id !== turmaId);
+      lote.update(this.colecao("alunos").doc(a.id), {
+        turmas: restantes,
+        diasPorSemana: RegrasTurmas.diasPorSemana(turmas.filter((t) => restantes.includes(t.id))),
+        alteradoEm: agora,
+      });
+    });
+    lote.delete(this.colecao("turmas").doc(turmaId));
+    await lote.commit();
+  },
 };

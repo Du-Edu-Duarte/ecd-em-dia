@@ -19,9 +19,11 @@ ecd-em-dia/
 │   │   ├── dados.js  ler, gravar e "ouvir" os dados do professor (sincroniza celular e computador)
 │   │   └── acesso.js login, cadastro, confirmação de e-mail, aprovação (único arquivo que fala com o Firebase Auth)
 │   ├── regras/
-│   │   └── turmas.js dias da semana, validação, dias por semana e treinos no mês (só cálculo)
+│   │   ├── turmas.js dias da semana, validação, dias por semana e treinos no mês (só cálculo)
+│   │   └── alunos.js WhatsApp, CPF, valor em R$, validação, busca e ocupação das turmas
 │   ├── telas/
-│   │   └── aulas.js  tela Aulas e horários
+│   │   ├── aulas.js  tela Aulas e horários
+│   │   └── alunos.js tela Alunos: lista, ficha, novo e editar (#/alunos, #/alunos/ID, #/alunos/ID/editar)
 │   ├── telas-acesso.js  telas Entrar, Criar conta, Esqueci a senha, Confirme seu e-mail, Aguardando aprovação
 │   ├── formato.js    datas dd/mm/aaaa, valores em R$, "hoje" no fuso de São Paulo
 │   ├── icones.js     ícones de traço (SVG), todos da mesma família
@@ -54,7 +56,7 @@ O login precisa do `js/firebase-config.js` preenchido. Sem ele, o sistema mostra
 1. Base e visual (feita)
 2. Firebase e acesso (feita)
 3. Aulas e horários (feita)
-4. Alunos
+4. Alunos (feita)
 5. Mensalidades
 6. Ajustes
 7. Botão Cobrar e Cobranças de hoje
