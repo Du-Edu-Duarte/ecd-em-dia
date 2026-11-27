@@ -161,10 +161,17 @@ const TelaAulas = {
   },
 
   // Confirmação dentro da própria tela (sem janela do navegador)
-  confirmarExclusao() {
+  async confirmarExclusao() {
     const zona = this.container.querySelector("#zona-excluir");
+    let alunosNaTurma = 0;
+    try {
+      alunosNaTurma = (await Dados.listar("alunos")).filter((a) => (a.turmas || []).includes(this.editando.id)).length;
+    } catch (e) { console.error(e); }
+    const aviso = alunosNaTurma
+      ? ` ${alunosNaTurma === 1 ? "1 aluno treina" : `${alunosNaTurma} alunos treinam`} nela e ${alunosNaTurma === 1 ? "vai deixar" : "vão deixar"} de ter essa turma no cadastro.`
+      : "";
     zona.innerHTML = `
-      <p class="excluir-pergunta">Excluir a turma <strong>${Formato.seguro(this.editando.nome)}</strong>? Isso não pode ser desfeito.</p>
+      <p class="excluir-pergunta">Excluir a turma <strong>${Formato.seguro(this.editando.nome)}</strong>?${aviso} Isso não pode ser desfeito.</p>
       <div class="formulario-acoes">
         <button class="botao botao-perigo-cheio" type="button" id="sim-excluir">Sim, excluir</button>
         <button class="botao botao-secundario" type="button" id="nao-excluir">Não</button>
@@ -173,7 +180,7 @@ const TelaAulas = {
     zona.querySelector("#sim-excluir").addEventListener("click", async (e) => {
       e.target.disabled = true;
       try {
-        await Dados.excluir("turmas", this.editando.id);
+        await Dados.excluirTurma(this.editando.id);
         this.modo = "lista";
         this.lista();
       } catch (erro) {

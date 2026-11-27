@@ -27,6 +27,10 @@ const Icones = {
     mais:
       '<circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/>',
     "mais-item": '<path d="M12 5v14"/><path d="M5 12h14"/>',
+    buscar: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+    editar: '<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/>',
+    whatsapp:
+      '<path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4l-4.5 1.1z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1.2-1.6-2.2-1-1 .9c-1.1-.4-2.3-1.6-2.7-2.7l.9-1-1-2.2L9 8.5z"/>',
     voltar: '<path d="M15 6l-6 6 6 6"/>',
     fechar: '<path d="M6 6l12 12"/><path d="M18 6L6 18"/>',
     seta: '<path d="M9 6l6 6-6 6"/>',

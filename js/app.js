@@ -99,18 +99,21 @@
   }
 
   // 4. Navegação: lê o endereço e desenha a tela certa
+  // "#/alunos/abc/editar" -> tela "alunos" e parâmetro "abc/editar"
   function telaAtual() {
-    const id = location.hash.replace("#/", "");
-    return telasVisiveis.find((t) => t.id === id) || telasVisiveis.find((t) => t.id === TELA_INICIAL);
+    const [id, ...resto] = location.hash.replace("#/", "").split("/");
+    const tela = telasVisiveis.find((t) => t.id === id);
+    if (!tela) return { tela: telasVisiveis.find((t) => t.id === TELA_INICIAL), parametro: "" };
+    return { tela, parametro: resto.join("/") };
   }
 
   function navegar() {
     // Sem acesso liberado, o endereço não abre nenhuma tela do sistema
     if (!estado || !(estado.situacao === "ativo" || estado.situacao === "admin")) return;
 
-    const tela = telaAtual();
+    const { tela, parametro } = telaAtual();
     Dados.pararTudo(); // fecha as listas que a tela anterior estava ouvindo
-    if (tela.desenhar) tela.desenhar($("conteudo"));
+    if (tela.desenhar) tela.desenhar($("conteudo"), parametro);
     else $("conteudo").innerHTML = desenharTela(tela);
     document.title = `${tela.titulo} | ${ECD_CONFIG.nomeSistema}`;
 

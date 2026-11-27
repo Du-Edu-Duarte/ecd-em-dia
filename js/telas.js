@@ -25,6 +25,7 @@ const TELAS = [
     menuInferior: true,
     etapa: 4,
     resumo: "Lista de alunos com busca e filtros, ficha com anotações e histórico.",
+    desenhar: (container, parametro) => TelaAlunos.desenhar(container, parametro),
   },
   {
     id: "cobrancas",
