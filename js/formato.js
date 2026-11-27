@@ -23,6 +23,13 @@ const Formato = {
     return `${d}/${m}/${a}`;
   },
 
+  // Data do JavaScript -> "aaaa-mm-dd" no fuso de São Paulo
+  isoDe(data) {
+    return new Intl.DateTimeFormat("en-CA", {
+      timeZone: ECD_CONFIG.fuso, year: "numeric", month: "2-digit", day: "2-digit",
+    }).format(data);
+  },
+
   // 150 -> "R$ 150,00"
   dinheiro(valor) {
     return new Intl.NumberFormat(ECD_CONFIG.idioma, {
