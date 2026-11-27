@@ -9,10 +9,13 @@ const RegrasAlunos = {
     { id: "inativo", rotulo: "Inativo" },
   ],
 
+  // Como o aluno pagou (ao registrar o pagamento)
   FORMAS: [
     { id: "pix", rotulo: "Pix" },
     { id: "cartao", rotulo: "Cartão de crédito" },
     { id: "boleto", rotulo: "Boleto" },
+    { id: "dinheiro", rotulo: "Dinheiro" },
+    { id: "outro", rotulo: "Transferência ou outra" },
   ],
 
   somenteNumeros(texto) {
@@ -79,7 +82,7 @@ const RegrasAlunos = {
     if (!a.whatsapp) return "Informe um WhatsApp válido com DDD, por exemplo (11) 91234-5678.";
     if (a.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a.email)) return "E-mail inválido.";
     if (a.cpf && !this.cpfValido(a.cpf)) return "CPF inválido. Confira os números ou deixe em branco.";
-    if (!(a.valor > 0)) return "Informe o valor da mensalidade, por exemplo 150,00.";
+    if (!(a.valor > 0)) return "Informe o valor, por exemplo 150,00.";
     if (!Number.isInteger(a.diaVencimento) || a.diaVencimento < 1 || a.diaVencimento > 31)
       return "O dia do vencimento precisa ser de 1 a 31.";
     if (!this.STATUS.some((s) => s.id === a.status)) return "Escolha a situação do aluno.";

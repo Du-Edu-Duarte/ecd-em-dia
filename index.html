@@ -27,15 +27,22 @@
 <body>
   <!-- Topo: nome do sistema, nome do professor e data de hoje -->
   <header class="topo">
-    <div class="topo-marca">
-      <span class="topo-sistema" id="nome-sistema"></span>
-      <span class="topo-cliente" id="nome-cliente"></span>
+    <div class="topo-esquerda">
+      <!-- Logo do professor (Ajustes > Sua marca). Sem logo, fica escondido. -->
+      <img class="topo-logo" id="logo-cliente" alt="" hidden />
+      <div class="topo-marca">
+        <span class="topo-sistema" id="nome-sistema"></span>
+        <span class="topo-cliente" id="nome-cliente"></span>
+      </div>
     </div>
     <div class="topo-direita">
       <span class="topo-data" id="data-hoje"></span>
       <button class="botao-icone botao-sair" id="botao-sair" type="button" aria-label="Sair" title="Sair" hidden></button>
     </div>
   </header>
+
+  <!-- Aviso do plano do sistema (vencendo ou vencido), só para o professor -->
+  <a class="faixa-plano" id="faixa-plano" hidden></a>
 
   <div class="estrutura">
     <!-- Menu lateral: aparece só no computador (tela larga) -->
@@ -74,6 +81,10 @@
   <script src="js/regras/alunos.js"></script>
   <script src="js/regras/mensalidades.js"></script>
   <script src="js/regras/mensagens.js"></script>
+    <script src="js/regras/formas.js"></script>
+    <script src="js/regras/planos.js"></script>
+    <script src="js/regras/marca.js"></script>
+    <script src="js/regras/assinatura.js"></script>
   <script src="js/regras/cobrancas.js"></script>
     <script src="js/regras/painel.js"></script>
     <script src="js/regras/relatorios.js"></script>
@@ -88,6 +99,7 @@
     <script src="js/telas/painel.js"></script>
     <script src="js/telas/relatorios.js"></script>
     <script src="js/telas/primeiro-acesso.js"></script>
+    <script src="js/telas/contas.js"></script>
   <script src="js/telas.js"></script>
   <script src="js/app.js"></script>
 </body>

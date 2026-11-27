@@ -10,7 +10,7 @@
  * Criou um arquivo novo em js/? Coloque também na lista ARQUIVOS e mude a VERSAO.
  * (O teste testes/pwa.test.js avisa se algum arquivo do index.html ficou de fora.)
  */
-const VERSAO = "ecd-em-dia-v1";
+const VERSAO = "ecd-em-dia-v3";
 
 const ARQUIVOS = [
   "./",
@@ -31,6 +31,10 @@ const ARQUIVOS = [
   "js/regras/alunos.js",
   "js/regras/mensalidades.js",
   "js/regras/mensagens.js",
+  "js/regras/formas.js",
+  "js/regras/planos.js",
+  "js/regras/marca.js",
+  "js/regras/assinatura.js",
   "js/regras/cobrancas.js",
   "js/regras/painel.js",
   "js/regras/relatorios.js",
@@ -45,6 +49,7 @@ const ARQUIVOS = [
   "js/telas/painel.js",
   "js/telas/relatorios.js",
   "js/telas/primeiro-acesso.js",
+  "js/telas/contas.js",
   "js/telas.js",
   "js/app.js",
 ];

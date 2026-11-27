@@ -135,8 +135,9 @@ const TelaMensalidades = {
     const sit = RegrasMensalidades.situacao(m, hoje);
     const enc = RegrasMensalidades.encargos(m, hoje, (Acesso.estado.perfil || {}).config);
     const aluno = this.alunos.find((a) => a.id === m.alunoId);
+    const sugerida = RegrasFormas.recebimentoSugerido(RegrasFormas.doPerfil(Acesso.estado.perfil), aluno && aluno.formaPreferida);
     const formas = RegrasAlunos.FORMAS.map((f) =>
-      `<option value="${f.id}" ${f.id === ((aluno && aluno.formaPreferida) || "pix") ? "selected" : ""}>${f.rotulo}</option>`).join("");
+      `<option value="${f.id}" ${f.id === sugerida ? "selected" : ""}>${f.rotulo}</option>`).join("");
     const nomeForma = (id) => (RegrasAlunos.FORMAS.find((f) => f.id === id) || { rotulo: id || "" }).rotulo;
     const pagamentos = m.pagamentos || [];
     const tipoTexto = RegrasCobrancas.tipoDoTexto(m, hoje);

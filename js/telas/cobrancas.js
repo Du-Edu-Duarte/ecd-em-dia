@@ -44,7 +44,7 @@ const TelaCobrancas = {
     const grupos = RegrasCobrancas.deHoje(this.dados.mensalidades, this.dados.alunos, this.dados.envios, hoje);
     const total = Object.values(grupos).reduce((n, g) => n + g.length, 0);
     const pendentes = Object.values(grupos).reduce((n, g) => n + g.filter((x) => !x.enviadoHoje).length, 0);
-    const semForma = !Pagamento.link(null, { formaPreferida: "pix" }, (Acesso.estado.perfil || {}).formasPagamento).ok;
+    const semForma = !RegrasFormas.doPerfil(Acesso.estado.perfil).length;
 
     const cartao = (item) => {
       const sit = RegrasMensalidades.situacao(item.m, hoje);
@@ -68,7 +68,7 @@ const TelaCobrancas = {
         <h1>Cobranças de hoje</h1>
         <p class="tela-resumo">${total ? `${pendentes} de ${total} ${total === 1 ? "cobrança" : "cobranças"} para enviar` : "Nenhuma cobrança para hoje"}</p>
       </div>
-      ${semForma ? `<a class="aviso aviso-alerta aviso-link" href="#/ajustes">Cadastre a chave Pix ou um link de pagamento em Ajustes para ele ir junto na mensagem.</a>` : ""}
+      ${semForma ? `<a class="aviso aviso-alerta aviso-link" href="#/ajustes">Cadastre pelo menos uma forma de pagamento em Ajustes para ela ir junto na mensagem.</a>` : ""}
       ${total ? this.GRUPOS.filter((g) => grupos[g.id].length).map((g) => `
         <section class="grupo-cobranca">
           <h2>${g.titulo} <span>${grupos[g.id].length}</span></h2>

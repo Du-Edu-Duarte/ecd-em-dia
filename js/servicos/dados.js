@@ -95,7 +95,15 @@ const Dados = {
 
     alunos.forEach((aluno) => {
       const cadastradoEm = aluno.criadoEm && aluno.criadoEm.toDate ? Formato.isoDe(aluno.criadoEm.toDate()) : null;
-      RegrasMensalidades.paraGerar(aluno, hoje, cadastradoEm).forEach(({ competencia, vencimento }) => {
+      const devidas = RegrasMensalidades.paraGerar(aluno, hoje, cadastradoEm);
+      // Mudou o plano (ex.: de mensal para trimestral)? Apaga as mensalidades deste mês em diante
+      // que não pertencem mais ao ciclo, desde que nada tenha sido pago nelas.
+      if (aluno.status === "ativo") {
+        const ciclo = new Set(devidas.map((d) => d.competencia));
+        existentes.filter((m) => m.alunoId === aluno.id && m.competencia >= mesAtual && !ciclo.has(m.competencia) && !(m.valorPago > 0))
+          .forEach((m) => { lote.delete(this.colecao("mensalidades").doc(m.id)); mudancas++; });
+      }
+      devidas.forEach(({ competencia, vencimento }) => {
         const id = RegrasMensalidades.idMensalidade(aluno.id, competencia);
         const atual = porId.get(id);
         const ref = this.colecao("mensalidades").doc(id);

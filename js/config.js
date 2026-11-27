@@ -33,6 +33,20 @@ window.ECD_CONFIG = {
     { id: "telefone", rotulo: "WhatsApp com DDD", tipo: "tel", obrigatorio: true, dica: "(11) 91234-5678" },
   ],
 
+  // Plano do sistema que cada cliente compra da ECD (tela Contas do administrador).
+  // diasAviso: a partir de quantos dias antes do fim o plano aparece como "Vencendo" e o cliente vê o aviso.
+  // diasTolerancia: dias depois do fim até travar o acesso sozinho (null = nunca trava sozinho).
+  assinatura: {
+    diasAviso: 15,
+    diasTolerancia: 7,
+  },
+
+  // Contato da ECD mostrado ao cliente com o plano vencido (WhatsApp só com números, com DDD).
+  contatoECD: {
+    whatsapp: "",
+    email: "eduardoduartecostaduarte@gmail.com",
+  },
+
   // Formatos brasileiros (usados em js/formato.js).
   fuso: "America/Sao_Paulo",
   idioma: "pt-BR",

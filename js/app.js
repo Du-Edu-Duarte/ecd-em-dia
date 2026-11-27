@@ -40,6 +40,8 @@
 
     Dados.pararTudo();
     Tema.aplicar(liberado && estado.perfil && estado.perfil.config ? estado.perfil.config.tema : "");
+    Marca.aplicar(liberado && estado.perfil ? estado.perfil.marca : null);
+    $("faixa-plano").hidden = true;
     if (!liberado) {
       $("nome-cliente").textContent = ECD_CONFIG.nomeCliente;
       document.title = ECD_CONFIG.nomeSistema;
@@ -52,6 +54,7 @@
     telasVisiveis = TELAS.filter((t) => !t.apenasAdmin || estado.situacao === "admin");
     Dados.gerarMensalidades().catch((e) => console.error(e)); // cria as mensalidades que faltam
     montarMenus();
+    avisoDoPlano();
 
     // Primeira vez do professor: abre o guia de Primeiro acesso no lugar do Painel
     const semTela = ["", "#", "#/", "#/painel"].includes(location.hash);
@@ -59,6 +62,26 @@
       history.replaceState(null, "", "#/primeiro-acesso");
     }
     navegar();
+  }
+
+  // Faixa "Seu plano vence em X dias" para o professor (o administrador não tem plano)
+  function avisoDoPlano() {
+    const faixa = $("faixa-plano");
+    const p = estado.perfil && estado.perfil.plano;
+    const sit = RegrasAssinatura.situacao(p, Formato.hojeISO(), ECD_CONFIG.assinatura);
+    const mostrar = estado.situacao === "ativo" && (sit.codigo === "vencendo" || sit.codigo === "tolerancia");
+    faixa.hidden = !mostrar;
+    if (!mostrar) return;
+    const contato = ECD_CONFIG.contatoECD || {};
+    const texto = `Olá! Quero renovar o meu plano do ${ECD_CONFIG.nomeSistema}.`;
+    faixa.href = contato.whatsapp ? `https://wa.me/55${contato.whatsapp}?text=${encodeURIComponent(texto)}`
+      : `mailto:${contato.email || ""}?subject=${encodeURIComponent("Renovar plano " + ECD_CONFIG.nomeSistema)}`;
+    faixa.target = "_blank";
+    faixa.rel = "noopener";
+    faixa.classList.toggle("faixa-urgente", sit.codigo === "tolerancia");
+    faixa.textContent = sit.codigo === "tolerancia"
+      ? `Seu plano venceu em ${Formato.data(p.fim)}.${sit.bloqueioEm ? ` O acesso trava depois de ${Formato.data(sit.bloqueioEm)}.` : ""} Toque para renovar.`
+      : `Seu plano vence em ${Formato.data(p.fim)} (${sit.rotulo.toLowerCase()}). Toque para renovar.`;
   }
 
   // 3. Menus
@@ -123,6 +146,7 @@
     Dados.pararTudo(); // fecha as listas que a tela anterior estava ouvindo
     // Desfaz uma prévia de tema que não foi salva em Ajustes
     Tema.aplicar(((Acesso.estado.perfil || {}).config || {}).tema);
+    Marca.aplicar((Acesso.estado.perfil || {}).marca); // desfaz uma prévia de cores não salva
     if (tela.desenhar) tela.desenhar($("conteudo"), parametro);
     else $("conteudo").innerHTML = desenharTela(tela);
     document.title = `${tela.titulo} | ${ECD_CONFIG.nomeSistema}`;

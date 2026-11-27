@@ -25,11 +25,21 @@ service cloud.firestore {
       return logado() && request.auth.uid == uid;
     }
 
-    // Professor aprovado: e-mail confirmado e status "ativo" no perfil
+    // Plano do sistema em dia: sem plano (sem controle de prazo), sem trava,
+    // ou a data de trava (fim do plano + tolerância) ainda não chegou.
+    function planoEmDia(p) {
+      return !('plano' in p) || p.plano == null
+        || !('travaEm' in p.plano) || p.plano.travaEm == null
+        || request.time < p.plano.travaEm;
+    }
+
+    // Professor aprovado: e-mail confirmado, status "ativo" no perfil e plano em dia
     function aprovado(uid) {
+      let perfil = get(/databases/$(database)/documents/professores/$(uid)).data;
       return dono(uid)
         && request.auth.token.email_verified == true
-        && get(/databases/$(database)/documents/professores/$(uid)).data.status == 'ativo';
+        && perfil.status == 'ativo'
+        && planoEmDia(perfil);
     }
 
     match /professores/{uid} {

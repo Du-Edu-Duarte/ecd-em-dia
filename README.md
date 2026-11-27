@@ -80,7 +80,7 @@ O login precisa do `js/firebase-config.js` preenchido. Sem ele, o sistema mostra
 - **Enviar no WhatsApp** abre a conversa com o texto do lembrete (de Ajustes) e a forma de pagamento já preenchidos. O professor só confirma o envio no WhatsApp.
 - Cada toque fica registrado em `professores/{uid}/envios` com data e hora. O cartão passa para "Enviar de novo" e mostra a última cobrança.
 - O botão **Cobrar** na mensalidade faz o mesmo a qualquer momento, fora da régua.
-- Atrasados aparecem todos os dias até o pagamento (se deve repetir só a cada alguns dias ainda está em aberto com o cliente).
+- Atrasados aparecem no dia seguinte ao vencimento e depois a cada 2 dias (contados da última cobrança), até o pagamento. Se o professor pular um dia, o aluno aparece no seguinte. O intervalo fica em `RegrasCobrancas.REPETIR_ATRASO`.
 - Na fase 2, `js/servicos/envio.js` passa a enviar sozinho pelo servidor, gravando o mesmo registro.
 
 ## O Painel
@@ -104,6 +104,37 @@ O login precisa do `js/firebase-config.js` preenchido. Sem ele, o sistema mostra
 - **Criou um arquivo novo em `js/`?** Coloque-o também na lista `ARQUIVOS` do `sw.js` e mude a `VERSAO` (ex.: `ecd-em-dia-v2`). O teste `testes/pwa.test.js` avisa se esquecer.
 - Mudou o nome ou as cores em `js/config.js`? Mude também no `manifest.webmanifest` e gere os ícones de novo a partir de `img/icone.svg`.
 - Na primeira vez que o professor entra, abre o guia **Primeiro acesso** (8 passos, um por tela). O passo 2 já grava o nome, o WhatsApp e a chave Pix. Quando ele conclui ou pula, o perfil ganha `guiaVisto: true` e o guia não abre mais sozinho; ele continua em **Mais > Primeiro acesso**.
+
+## Formas de pagamento (Ajustes)
+
+- O professor cadastra quantas formas quiser (até 10), e nenhuma é obrigatória: chave Pix, Pix copia e cola ou link do Pix, link de pagamento (cartão), link de boleto e "outra" (ex.: transferência).
+- Links precisam começar com `https://`. A regra fica em `js/regras/formas.js`.
+- Na ficha do aluno, "Forma de pagamento na cobrança" escolhe se a mensagem leva todas as formas ou só uma.
+- Perfis antigos (campo `formasPagamento` com pix, linkCartao e linkBoleto) são lidos e convertidos sozinhos.
+
+## Planos dos alunos (Ajustes)
+
+- O professor monta os planos dele: vezes por semana (1x a 7x), período (mensal, trimestral, semestral ou anual) e valor. Ex.: "3x por semana · Trimestral · R$ 420,00".
+- No cadastro do aluno, escolher o plano preenche o período e o valor. Também dá para usar "Sem plano (valor livre)".
+- Aluno trimestral tem uma cobrança a cada 3 meses, semestral a cada 6 e anual a cada 12, contando a partir do mês de início.
+- Se o aluno está em mais aulas por semana do que o plano permite, a ficha avisa. Regra em `js/regras/planos.js`.
+
+## Marca do professor (Ajustes > Sua marca e aparência)
+
+- O professor envia o logo (PNG, JPG ou WEBP). O sistema diminui a imagem no próprio aparelho (até 256 px) e guarda no perfil, porque o Firebase Storage exige plano pago.
+- Ao enviar o logo, o sistema sugere as cores do topo e de destaque. O professor pode trocar ou voltar às cores do ECD Em Dia.
+- As cores só são aceitas com contraste bom para leitura (regra em `js/regras/marca.js`). O tema P&B continua por cima de tudo.
+- O logo aparece no topo e no PDF dos relatórios.
+
+## Plano do sistema (Mais > Contas e planos, só administrador)
+
+- Mostra cada professor com a situação do plano: **Sem plano**, **Em dia**, **Vence em breve**, **Vencido, ainda liberado** e **Vencido, travado**, com barra de tempo e dias que faltam.
+- **Liberar plano / Renovar plano**: escolha 1, 3, 6 ou 12 meses e o valor. Se ainda está em dia, a renovação soma a partir do fim do plano atual. Tudo fica no histórico.
+- **Cobrar renovação** abre o WhatsApp do professor com a mensagem pronta e anota a data da cobrança.
+- Cartões no alto: em dia, vencidos, pendentes de aprovação e receita prevista no ano. Filtros por situação.
+- Prazos em `js/config.js` > `assinatura`: `diasAviso` (15, quando começa a faixa "seu plano vence em...") e `diasTolerancia` (7, dias liberado depois do vencimento; `null` só avisa e nunca trava).
+- Quem trava de verdade é o `firestore.rules` (campo `plano.travaEm`): depois dessa data o professor não lê nem grava nada, e vê a tela "Seu plano venceu" com o contato de `contatoECD`.
+- Conta sem plano não tem prazo (cortesia). Mudou o `firestore.rules`? Publique de novo no console do Firebase.
 
 ## Etapas da Fase 1
 

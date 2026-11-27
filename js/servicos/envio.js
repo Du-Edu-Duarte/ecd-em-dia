@@ -14,7 +14,7 @@ const Envio = {
   prepararWhatsapp(m, aluno, tipoTexto) {
     const perfil = Acesso.estado.perfil || {};
     const hoje = Formato.hojeISO();
-    const link = Pagamento.link(m, aluno, perfil.formasPagamento);
+    const link = Pagamento.link(m, aluno, perfil);
     const modelo = RegrasMensagens.modelo(tipoTexto, perfil.templates);
     const texto = RegrasMensagens.montar(modelo, RegrasCobrancas.valores(m, aluno, perfil, hoje, link.texto));
     return { texto, url: RegrasAlunos.linkWhatsapp(aluno.whatsapp, texto), temLink: link.ok };
