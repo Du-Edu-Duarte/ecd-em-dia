@@ -1,4 +1,4 @@
-// Testes das regras de turmas. Para rodar: node --test testes/*.test.js*.test.js
+// Testes das regras de turmas. Para rodar: node --test testes/*.test.js
 // (precisa do Node.js 18 ou mais novo; não precisa instalar nada)
 const { test } = require("node:test");
 const assert = require("node:assert");

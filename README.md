@@ -27,7 +27,7 @@ ecd-em-dia/
 │   ├── icones.js     ícones de traço (SVG), todos da mesma família
 │   ├── telas.js      lista das telas, o desenho de cada uma e a tela Contas (administrador)
 │   └── app.js        aplica o config, monta os menus e troca de tela pelo endereço (#/alunos)
-├── testes/           testes das regras: node --test testes/*.test.js*.test.js
+├── testes/           testes das regras: node --test testes/*.test.js
 └── img/              ícones do app (etapa 10)
 ```
 
